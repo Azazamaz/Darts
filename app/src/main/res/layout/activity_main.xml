@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context="home.lali.darts.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/newGame_btn"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="New Game"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"/>
+        <Button
+            android:id="@+id/statistic_btn"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/newGame_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Statistics"/>
+        <Button
+            android:id="@+id/exit_btn"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/statistic_btn"
+            android:layout_marginTop="30dp"
+            android:text="Exit"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

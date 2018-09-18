@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="modeValues">
+        <item>301</item>
+        <item>501</item>
+        <item>701</item>
+    </string-array>
+
+    <string-array name="legValues">
+        <item>Best of 3</item>
+        <item>Best of 5</item>
+        <item>Best of 7</item>
+    </string-array>
+
+    <string-array name="setValues">
+        <item>Best of 3</item>
+        <item>Best of 5</item>
+        <item>Best of 7</item>
+        <item>Best of 9</item>
+        <item>Best of 11</item>
+        <item>Best of 13</item>
+    </string-array>
+</resources>

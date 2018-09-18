@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context="home.lali.darts.NewGameActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layout_players"
+            android:layout_width="180dp"
+            android:layout_height="270dp"
+            android:orientation="vertical"
+            android:gravity="start">
+
+            <TextView
+                android:id="@+id/addplayer_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:text="Players"
+                android:textSize="20sp"/>
+            <Button
+                android:id="@+id/addplayer_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Player"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal" />
+            <ScrollView
+                android:id="@+id/scrollNames"
+                android:layout_width="match_parent"
+                android:layout_height="160dp">
+
+                <LinearLayout
+                    android:id="@+id/scrollNamesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"/>
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_gamemode"
+            android:layout_width="180dp"
+            android:layout_height="90dp"
+            android:orientation="vertical"
+            android:layout_alignParentEnd="true"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/gamemode_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/game_mode"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"/>
+
+            <Spinner
+                android:id="@+id/gamemode_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:spinnerMode="dialog"
+                android:scrollbarSize="30dp"
+                android:entries="@array/modeValues"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_legsNumber"
+            android:layout_width="180dp"
+            android:layout_height="90dp"
+            android:orientation="vertical"
+            android:layout_alignParentEnd="true"
+            android:gravity="end"
+            android:layout_below="@id/layout_gamemode">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Leg Number"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"/>
+
+            <Spinner
+                android:id="@+id/legsnumber_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
+                android:layout_gravity="center"
+                android:entries="@array/legValues" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_setsNumber"
+            android:layout_width="180dp"
+            android:layout_height="90dp"
+            android:orientation="vertical"
+            android:layout_alignParentEnd="true"
+            android:gravity="end"
+            android:layout_below="@id/layout_legsNumber">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Number"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"/>
+
+            <Spinner
+                android:id="@+id/sets_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:entries="@array/setValues"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/startgame_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:text="Start Game"/>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

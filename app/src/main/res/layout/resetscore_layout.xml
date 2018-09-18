@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/resetText_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset Jani's last score?"
+        android:textSize="22dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/cancelReset_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/resetText_tv"
+        android:layout_alignStart="@id/resetText_tv"
+        android:text="@string/cancel_str"/>
+
+    <Button
+        android:id="@+id/yesReset_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/resetText_tv"
+        android:layout_alignEnd="@id/resetText_tv"
+        android:text="@string/resetYes"/>
+
+</RelativeLayout>
