@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +29,7 @@ public class PlayGameActivity extends AppCompatActivity {
     private TextView setsWon1, setsWon2;
     private TextView legAvg1, legAvg2;
     private TextView matchAvg1, matchAvg2;
+    private TextView checkout1, checkout2;
 
     private EditText enterScore1, enterScore2;
 
@@ -62,10 +62,30 @@ public class PlayGameActivity extends AppCompatActivity {
     private double legAvg_help2 = 0;
     private double matchAvg_help2 = 0;
 
+    private DatabaseAccess databaseAccess;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
+
+        initFields();
+
+        databaseAccess = DatabaseAccess.getInstance(PlayGameActivity.this);
+
+        getInformation();
+        updateEnterScore();
+
+        enterScore1.requestFocus();
+
+        ok_btn.setOnClickListener(okBtnFunction);
+        reset.setOnClickListener(resetScore);
+    }
+
+    /**
+     * Mező inicializáló metódus
+     * */
+    protected void initFields(){
         LinearLayout scoreLayout = findViewById(R.id.score_layout);
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -91,6 +111,7 @@ public class PlayGameActivity extends AppCompatActivity {
         setsWon1 = scoreboardLayout.findViewById(R.id.setsWon_tv);
         legAvg1 = scoreboardLayout.findViewById(R.id.avgLeg_tv);
         matchAvg1 = scoreboardLayout.findViewById(R.id.avgMatch_tv);
+        checkout1 = scoreboardLayout.findViewById(R.id.checkout_tv);
 
         playerName2 = scoreboardLayout2.findViewById(R.id.playerName_tv);
         score2 = scoreboardLayout2.findViewById(R.id.score_tv);
@@ -99,6 +120,7 @@ public class PlayGameActivity extends AppCompatActivity {
         setsWon2 = scoreboardLayout2.findViewById(R.id.setsWon_tv);
         legAvg2 = scoreboardLayout2.findViewById(R.id.avgLeg_tv);
         matchAvg2 = scoreboardLayout2.findViewById(R.id.avgMatch_tv);
+        checkout2 = scoreboardLayout2.findViewById(R.id.checkout_tv);
 
         num1 = findViewById(R.id.number1_btn);
         num2 = findViewById(R.id.number2_btn);
@@ -116,16 +138,7 @@ public class PlayGameActivity extends AppCompatActivity {
 
         player1 = new DartsPlayer();
         player2 = new DartsPlayer();
-
-        getInformation();
-        updateEnterScore();
-
-        enterScore1.requestFocus();
-
-        ok_btn.setOnClickListener(okBtnFunction);
-        reset.setOnClickListener(resetScore);
     }
-
 
     /**
      * Adatok lekérdezése az előző Activity-ről.
@@ -304,6 +317,15 @@ public class PlayGameActivity extends AppCompatActivity {
         }
     };
 
+    private void getPlayerCheckout(DartsPlayer player, TextView score, TextView checkout){
+        if (player.getScore() < 180){
+            databaseAccess.open();
+            String checkO = databaseAccess.getCheckout(String.valueOf(score.getText()));
+            databaseAccess.close();
+            checkout.setText(checkO);
+        }
+    }
+
     private void player1Round() {
         try {
             int score_helper;
@@ -321,6 +343,9 @@ public class PlayGameActivity extends AppCompatActivity {
                     player1.setScore(player1.getScore() - score_helper);
                     score1.setText(String.valueOf(player1.getScore()));
                     player1.setLastScore(score_helper);
+
+                    ///Kiszállózás
+                    getPlayerCheckout(player1, score1, checkout1);
 
                     legAvg_help1 += score_helper;
                     matchAvg_help1 += score_helper;
@@ -347,24 +372,33 @@ public class PlayGameActivity extends AppCompatActivity {
                 player1.setScore(gameMode);
                 score2.setText(String.valueOf(gameMode));
                 player2.setScore(gameMode);
+                checkout2.setText("");
             }
 
             //Szettek végét figyelő kódrész.
-            if (player1.getLegW() == (legNumber / 2 + 1)) {
-                player1.setLegW(0);
-                legsWon1.setText(String.valueOf(player1.getLegW()));
-                player1.setSetW(player1.getSetW() + 1);
-                setsWon1.setText(String.valueOf(player1.getSetW()));
-
-                player2.setLegW(0);
-                legsWon2.setText(String.valueOf(player2.getLegW()));
-            }
+            endOfSet(player1, player2, legsWon1, setsWon1, legsWon2);
 
             if (player1.getSetW() == (setNumber / 2 + 1)) {
                 matchWinnerDialog(player1).show();
             }
         } catch (Exception ex) {
-            Toast.makeText(PlayGameActivity.this, "Score field is empty!", Toast.LENGTH_LONG).show();
+            Toast.makeText(PlayGameActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e("DARTS", "Exception:" + Log.getStackTraceString(ex));
+        }
+    }
+
+    /**
+     * Szettek végét ellenőrző metódus.
+     * */
+    private void endOfSet(DartsPlayer p1, DartsPlayer p2, TextView legW1, TextView setW1, TextView legW2){
+        if (p1.getLegW() == (legNumber / 2 + 1)){
+            p1.setLegW(0);
+            legW1.setText(String.valueOf(p1.getLegW()));
+            p1.setSetW(p1.getSetW() + 1);
+            setW1.setText(String.valueOf(p1.getSetW()));
+
+            p2.setLegW(0);
+            legW2.setText(String.valueOf(p2.getLegW()));
         }
     }
 
@@ -385,6 +419,9 @@ public class PlayGameActivity extends AppCompatActivity {
                     player2.setScore(player2.getScore() - score_helper);
                     score2.setText(String.valueOf(player2.getScore()));
                     player2.setLastScore(score_helper);
+
+                    ///Kiszállók
+                    getPlayerCheckout(player2, score2, checkout2);
 
                     legAvg_help2 += score_helper;
                     matchAvg_help2 += score_helper;
@@ -412,18 +449,11 @@ public class PlayGameActivity extends AppCompatActivity {
 
                 score1.setText(String.valueOf(gameMode));
                 player1.setScore(gameMode);
+                checkout1.setText("");
             }
 
             //Szettek végét figyelő kódrész.
-            if (player2.getLegW() == (legNumber / 2 + 1)) {
-                player2.setLegW(0);
-                legsWon2.setText(String.valueOf(player2.getLegW()));
-                player2.setSetW(player2.getSetW() + 1);
-                setsWon2.setText(String.valueOf(player2.getSetW()));
-
-                player1.setLegW(0);
-                legsWon1.setText(String.valueOf(player1.getLegW()));
-            }
+            endOfSet(player2, player1, legsWon2, setsWon2, legsWon1);
 
             if (player2.getSetW() == (setNumber / 2 + 1)) {
                 matchWinnerDialog(player2).show();
@@ -442,10 +472,10 @@ public class PlayGameActivity extends AppCompatActivity {
 
             if ((okBtnPress - 1) % 2 == 0){
                 TextView tv = resetScoreDialogView.findViewById(R.id.resetText_tv);
-                tv.setText("Reset " + player1.getPlayerName() + "'s last score?");
+                tv.setText(getString(R.string.reset_score_str, player1.getPlayerName()));
             } else if ((okBtnPress - 1) % 2 == 1){
                 TextView tv = resetScoreDialogView.findViewById(R.id.resetText_tv);
-                tv.setText("Reset " + player2.getPlayerName() + "'s last score?");
+                tv.setText(getString(R.string.reset_score_str, player2.getPlayerName()));
             }
             dialog.setView(resetScoreDialogView);
 
