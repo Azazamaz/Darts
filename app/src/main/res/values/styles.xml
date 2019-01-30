@@ -8,7 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-
     <style name="popupSpinner">
         <item name="android:textAlignment">center</item>
     </style>

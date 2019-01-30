@@ -10,14 +10,11 @@
         <item>Best of 3</item>
         <item>Best of 5</item>
         <item>Best of 7</item>
-    </string-array>
-
-    <string-array name="setValues">
-        <item>Best of 3</item>
-        <item>Best of 5</item>
-        <item>Best of 7</item>
         <item>Best of 9</item>
         <item>Best of 11</item>
         <item>Best of 13</item>
+        <item>Best of 15</item>
+        <item>Best of 17</item>
+        <item>Best of 19</item>
     </string-array>
 </resources>

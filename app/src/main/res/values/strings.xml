@@ -10,6 +10,14 @@
     <string name="legs_won_str">Legs won</string>
     <string name="playerName_str">Azazamaz</string>
     <string name="resetYes">Yes</string>
-    <string name="title_activity_register_player">Register Player</string>
     <string name="reset_score_str">Reset %1$s\' last score?</string>
+    <string name="leg_number">Leg Number</string>
+    <string name="set_number">Set Number</string>
+    <string name="start_game">Start Game</string>
+    <string name="add_player">Add Player</string>
+    <string name="players">Players</string>
+    <string name="new_game">New Game</string>
+    <string name="statistics">Statistics</string>
+    <string name="ok_text">ok</string>
+    <string name="reset_score">Reset score</string>
 </resources>
