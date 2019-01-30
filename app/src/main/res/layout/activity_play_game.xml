@@ -112,13 +112,14 @@
                 android:layout_height="50dp"
                 android:src="@drawable/reset_icon"
                 android:layout_below="@id/number9_btn"
-                android:layout_toEndOf="@id/number0_btn"/>
+                android:layout_toEndOf="@id/number0_btn"
+                android:contentDescription="@string/reset_score"/>
 
             <Button
                 android:id="@+id/ok_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ok"
+                android:text="@string/ok_text"
                 android:layout_toEndOf="@id/number3_btn"/>
 
         </RelativeLayout>

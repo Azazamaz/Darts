@@ -15,7 +15,7 @@
             android:id="@+id/newGame_btn"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="New Game"
+            android:text="@string/new_game"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="100dp"/>
         <Button
@@ -25,15 +25,7 @@
             android:layout_below="@id/newGame_btn"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Statistics"/>
-        <Button
-            android:id="@+id/exit_btn"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/statistic_btn"
-            android:layout_marginTop="30dp"
-            android:text="Exit"
-            android:layout_centerHorizontal="true"/>
+            android:text="@string/statistics"/>
 
     </RelativeLayout>
 
