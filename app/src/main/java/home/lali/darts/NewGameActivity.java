@@ -22,11 +22,7 @@ public class NewGameActivity extends AppCompatActivity {
     private LinearLayout scrollableLayout;
 
     private Spinner gameModes;
-    private Spinner setsNumber;
     private Spinner legsNumber;
-
-    private Button startGame;
-    private Button addNewPlayer;
 
     private EditText addedPlayerName;
 
@@ -37,9 +33,11 @@ public class NewGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_game);
 
+        Button startGame;
+        Button addNewPlayer;
+
         gameModes = findViewById(R.id.gamemode_spinner);
         legsNumber = findViewById(R.id.legsnumber_spinner);
-        setsNumber = findViewById(R.id.sets_spinner);
 
         startGame = findViewById(R.id.startgame_btn);
         startGame.setOnClickListener(new View.OnClickListener() {
@@ -81,20 +79,18 @@ public class NewGameActivity extends AppCompatActivity {
             bundle.putInt("LEG_NUMBER", 5);
         } else if (legsNumber.getSelectedItem().toString().contains("7")) {
             bundle.putInt("LEG_NUMBER", 7);
-        }
-
-        if (setsNumber.getSelectedItem().toString().contains("3")) {
-            bundle.putInt("SET_NUMBER", 3);
-        } else if (setsNumber.getSelectedItem().toString().contains("5")) {
-            bundle.putInt("SET_NUMBER", 5);
-        } else if (setsNumber.getSelectedItem().toString().contains("7")) {
-            bundle.putInt("SET_NUMBER", 7);
-        } else if (setsNumber.getSelectedItem().toString().contains("9")) {
-            bundle.putInt("SET_NUMBER", 9);
-        } else if (setsNumber.getSelectedItem().toString().contains("11")) {
-            bundle.putInt("SET_NUMBER", 11);
-        } else if (setsNumber.getSelectedItem().toString().contains("13")) {
-            bundle.putInt("SET_NUMBER", 13);
+        } else if (legsNumber.getSelectedItem().toString().contains("9")) {
+            bundle.putInt("LEG_NUMBER", 9);
+        } else if (legsNumber.getSelectedItem().toString().contains("11")) {
+            bundle.putInt("LEG_NUMBER", 11);
+        } else if (legsNumber.getSelectedItem().toString().contains("13")) {
+            bundle.putInt("LEG_NUMBER", 13);
+        } else if (legsNumber.getSelectedItem().toString().contains("15")) {
+            bundle.putInt("LEG_NUMBER", 15);
+        } else if (legsNumber.getSelectedItem().toString().contains("17")) {
+            bundle.putInt("LEG_NUMBER", 17);
+        } else if (legsNumber.getSelectedItem().toString().contains("19")) {
+            bundle.putInt("LEG_NUMBER", 19);
         }
 
         bundle.putStringArrayList("PLAYERS_LIST", playersList);
