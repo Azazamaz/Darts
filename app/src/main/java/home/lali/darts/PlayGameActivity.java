@@ -19,14 +19,9 @@ import java.util.ArrayList;
 
 public class PlayGameActivity extends AppCompatActivity {
 
-    private int gameMode;
-    private int legNumber;
-    private int setNumber;
-
     private TextView playerName1, playerName2;
     private TextView score1, score2;
     private TextView legsWon1, legsWon2;
-    private TextView setsWon1, setsWon2;
     private TextView legAvg1, legAvg2;
     private TextView matchAvg1, matchAvg2;
     private TextView checkout1, checkout2;
@@ -51,6 +46,8 @@ public class PlayGameActivity extends AppCompatActivity {
     private DartsPlayer player1;
     private DartsPlayer player2;
 
+    private int gameMode;
+    private int legNumber;
     private int matchRounds1 = 0;
     private int legRounds1 = 0;
     private int matchRounds2 = 0;
@@ -84,8 +81,8 @@ public class PlayGameActivity extends AppCompatActivity {
 
     /**
      * Mező inicializáló metódus
-     * */
-    protected void initFields(){
+     */
+    protected void initFields() {
         LinearLayout scoreLayout = findViewById(R.id.score_layout);
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -108,7 +105,6 @@ public class PlayGameActivity extends AppCompatActivity {
         score1 = scoreboardLayout.findViewById(R.id.score_tv);
         enterScore1 = scoreboardLayout.findViewById(R.id.enterScore_et);
         legsWon1 = scoreboardLayout.findViewById(R.id.legsWon_tv);
-        setsWon1 = scoreboardLayout.findViewById(R.id.setsWon_tv);
         legAvg1 = scoreboardLayout.findViewById(R.id.avgLeg_tv);
         matchAvg1 = scoreboardLayout.findViewById(R.id.avgMatch_tv);
         checkout1 = scoreboardLayout.findViewById(R.id.checkout_tv);
@@ -117,7 +113,6 @@ public class PlayGameActivity extends AppCompatActivity {
         score2 = scoreboardLayout2.findViewById(R.id.score_tv);
         enterScore2 = scoreboardLayout2.findViewById(R.id.enterScore_et);
         legsWon2 = scoreboardLayout2.findViewById(R.id.legsWon_tv);
-        setsWon2 = scoreboardLayout2.findViewById(R.id.setsWon_tv);
         legAvg2 = scoreboardLayout2.findViewById(R.id.avgLeg_tv);
         matchAvg2 = scoreboardLayout2.findViewById(R.id.avgMatch_tv);
         checkout2 = scoreboardLayout2.findViewById(R.id.checkout_tv);
@@ -138,6 +133,8 @@ public class PlayGameActivity extends AppCompatActivity {
 
         player1 = new DartsPlayer();
         player2 = new DartsPlayer();
+
+        player1.setLegStart(true);
     }
 
     /**
@@ -151,16 +148,10 @@ public class PlayGameActivity extends AppCompatActivity {
         if (bundle != null) {
             gameMode = Integer.parseInt(bundle.getString("GAME_MODE"));
             legNumber = bundle.getInt("LEG_NUMBER");
-            setNumber = bundle.getInt("SET_NUMBER");
             players = bundle.getStringArrayList("PLAYERS_LIST");
 
             Log.i("Játékmód: ", Integer.toString(gameMode));
             Log.i("Legek száma: ", Integer.toString(legNumber));
-            Log.i("Szettek száma: ", Integer.toString(setNumber));
-
-            /*for (int i = 0; i < players.size(); i++) {
-                Log.i("Játékos neve: ", players.get(i));
-            }*/
 
             player1.setPlayerName(players.get(0));
             player1.setScore(gameMode);
@@ -309,16 +300,14 @@ public class PlayGameActivity extends AppCompatActivity {
         public void onClick(View view) {
             if ((okBtnPress % 2) == 0) {
                 player1Round();
-                Log.i("okbtn press értéke: ", okBtnPress + "");
             } else if ((okBtnPress % 2) == 1) {
                 player2Round();
-                Log.i("okbtn press értéke: ", okBtnPress + "");
             }
         }
     };
 
-    private void getPlayerCheckout(DartsPlayer player, TextView score, TextView checkout){
-        if (player.getScore() < 180){
+    private void getPlayerCheckout(DartsPlayer player, TextView score, TextView checkout) {
+        if (player.getScore() < 180) {
             databaseAccess.open();
             String checkO = databaseAccess.getCheckout(String.valueOf(score.getText()));
             databaseAccess.close();
@@ -334,12 +323,16 @@ public class PlayGameActivity extends AppCompatActivity {
             if (score_helper > 180) {
                 Toast.makeText(PlayGameActivity.this, "This is impossible with 3 darts!", Toast.LENGTH_LONG).show();
             } else {
+
                 if (player1.getScore() - score_helper < 0) {
                     Toast.makeText(PlayGameActivity.this, "Not possible!", Toast.LENGTH_LONG).show();
+                } else if (player1.getScore() - score_helper == 0 && player1.getScore() == 180) {
+                    Toast.makeText(PlayGameActivity.this, "180 is not checkout!", Toast.LENGTH_LONG).show();
                 } else {
                     matchRounds1++;
                     legRounds1++;
                     okBtnPress++;
+
                     player1.setScore(player1.getScore() - score_helper);
                     score1.setText(String.valueOf(player1.getScore()));
                     player1.setLastScore(score_helper);
@@ -373,32 +366,18 @@ public class PlayGameActivity extends AppCompatActivity {
                 score2.setText(String.valueOf(gameMode));
                 player2.setScore(gameMode);
                 checkout2.setText("");
+
+                setLegStartPlayer(player1, player2);
             }
 
-            //Szettek végét figyelő kódrész.
-            endOfSet(player1, player2, legsWon1, setsWon1, legsWon2);
 
-            if (player1.getSetW() == (setNumber / 2 + 1)) {
+            if (player1.getLegW() == (legNumber / 2 + 1)) {
                 matchWinnerDialog(player1).show();
             }
+
         } catch (Exception ex) {
             Toast.makeText(PlayGameActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
             Log.e("DARTS", "Exception:" + Log.getStackTraceString(ex));
-        }
-    }
-
-    /**
-     * Szettek végét ellenőrző metódus.
-     * */
-    private void endOfSet(DartsPlayer p1, DartsPlayer p2, TextView legW1, TextView setW1, TextView legW2){
-        if (p1.getLegW() == (legNumber / 2 + 1)){
-            p1.setLegW(0);
-            legW1.setText(String.valueOf(p1.getLegW()));
-            p1.setSetW(p1.getSetW() + 1);
-            setW1.setText(String.valueOf(p1.getSetW()));
-
-            p2.setLegW(0);
-            legW2.setText(String.valueOf(p2.getLegW()));
         }
     }
 
@@ -412,10 +391,13 @@ public class PlayGameActivity extends AppCompatActivity {
             } else {
                 if (player2.getScore() - score_helper < 0) {
                     Toast.makeText(PlayGameActivity.this, "Not possible!", Toast.LENGTH_LONG).show();
+                } else if (player2.getScore() - score_helper == 0 && player2.getScore() == 180) {
+                    Toast.makeText(PlayGameActivity.this, "180 is not checkout!", Toast.LENGTH_LONG).show();
                 } else {
                     matchRounds2++;
                     legRounds2++;
                     okBtnPress++;
+
                     player2.setScore(player2.getScore() - score_helper);
                     score2.setText(String.valueOf(player2.getScore()));
                     player2.setLastScore(score_helper);
@@ -450,18 +432,34 @@ public class PlayGameActivity extends AppCompatActivity {
                 score1.setText(String.valueOf(gameMode));
                 player1.setScore(gameMode);
                 checkout1.setText("");
+
+                setLegStartPlayer(player1, player2);
             }
 
-            //Szettek végét figyelő kódrész.
-            endOfSet(player2, player1, legsWon2, setsWon2, legsWon1);
-
-            if (player2.getSetW() == (setNumber / 2 + 1)) {
+            if (player2.getLegW() == (legNumber / 2 + 1)) {
                 matchWinnerDialog(player2).show();
             }
-        } catch (Exception ex){
+        } catch (Exception ex) {
             Toast.makeText(PlayGameActivity.this, "Score field is empty!", Toast.LENGTH_LONG).show();
         }
     }
+
+    private void setLegStartPlayer(DartsPlayer p1, DartsPlayer p2) {
+        if (p1.getLegStart()) {
+            p1.setLegStart(false);
+            p2.setLegStart(true);
+            if ((okBtnPress % 2) == 0) {
+                okBtnPress--;
+            }
+        } else if (p2.getLegStart()) {
+            p2.setLegStart(false);
+            p1.setLegStart(true);
+            if ((okBtnPress % 2) == 1) {
+                okBtnPress--;
+            }
+        }
+    }
+
 
     View.OnClickListener resetScore = new View.OnClickListener() {
         @Override
@@ -470,10 +468,10 @@ public class PlayGameActivity extends AppCompatActivity {
             final View resetScoreDialogView = inflater.inflate(R.layout.resetscore_layout, null);
             final AlertDialog dialog = new AlertDialog.Builder(PlayGameActivity.this).create();
 
-            if ((okBtnPress - 1) % 2 == 0){
+            if ((okBtnPress - 1) % 2 == 0) {
                 TextView tv = resetScoreDialogView.findViewById(R.id.resetText_tv);
                 tv.setText(getString(R.string.reset_score_str, player1.getPlayerName()));
-            } else if ((okBtnPress - 1) % 2 == 1){
+            } else if ((okBtnPress - 1) % 2 == 1) {
                 TextView tv = resetScoreDialogView.findViewById(R.id.resetText_tv);
                 tv.setText(getString(R.string.reset_score_str, player2.getPlayerName()));
             }
@@ -490,7 +488,7 @@ public class PlayGameActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     okBtnPress--;
-                    if (okBtnPress % 2 == 0){
+                    if (okBtnPress % 2 == 0) {
                         matchRounds1--;
                         legRounds1--;
                         player1.setScore(player1.getScore() + player1.getLastScore());
@@ -506,7 +504,7 @@ public class PlayGameActivity extends AppCompatActivity {
 
                         enterScore1.setText("");
                         enterScore2.requestFocus();
-                    } else if (okBtnPress % 2 == 1){
+                    } else if (okBtnPress % 2 == 1) {
                         matchRounds2--;
                         legRounds2--;
                         player2.setScore(player2.getScore() + player2.getLastScore());
