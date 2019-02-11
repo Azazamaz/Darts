@@ -17,7 +17,11 @@
     <string name="add_player">Add Player</string>
     <string name="players">Players</string>
     <string name="new_game">New Game</string>
-    <string name="statistics">Statistics</string>
-    <string name="ok_text">ok</string>
+    <string name="localStatistics">Local statistics</string>
+    <string name="ok_text">OK</string>
     <string name="reset_score">Reset score</string>
+    <string name="globalStat">Global statistics</string>
+    <string name="player_name">Player name</string>
+    <string name="result">Result</string>
+    <string name="match_avg">Match Avg</string>
 </resources>
