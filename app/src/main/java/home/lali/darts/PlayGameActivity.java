@@ -15,7 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+
+import home.lali.darts.database.DatabaseAccess;
+import home.lali.darts.model.DartsPlayer;
 
 public class PlayGameActivity extends AppCompatActivity {
 
@@ -373,6 +378,14 @@ public class PlayGameActivity extends AppCompatActivity {
 
             if (player1.getLegW() == (legNumber / 2 + 1)) {
                 matchWinnerDialog(player1).show();
+
+                double p1Avg = round(player1.getMatchAvg(), 2);
+                double p2Avg = round(player2.getMatchAvg(), 2);
+
+                databaseAccess.open();
+                databaseAccess.saveLocalGameStat(player1.getPlayerName(), player1.getLegW(), p1Avg,
+                        player2.getPlayerName(), player2.getLegW(), p2Avg);
+                databaseAccess.close();
             }
 
         } catch (Exception ex) {
@@ -438,6 +451,15 @@ public class PlayGameActivity extends AppCompatActivity {
 
             if (player2.getLegW() == (legNumber / 2 + 1)) {
                 matchWinnerDialog(player2).show();
+
+                double p1Avg = round(player1.getMatchAvg(), 2);
+                double p2Avg = round(player2.getMatchAvg(), 2);
+
+                databaseAccess.open();
+                databaseAccess.saveLocalGameStat(player1.getPlayerName(), player1.getLegW(), p1Avg,
+                        player2.getPlayerName(), player2.getLegW(), p2Avg);
+                databaseAccess.close();
+
             }
         } catch (Exception ex) {
             Toast.makeText(PlayGameActivity.this, "Score field is empty!", Toast.LENGTH_LONG).show();
@@ -566,5 +588,13 @@ public class PlayGameActivity extends AppCompatActivity {
         builder.setMessage(player.getPlayerName() + " is won the leg. Confirm?");
 
         return builder.create();
+    }
+
+    private double round(double val, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(val);
+        return bd.setScale(places, RoundingMode.HALF_UP).doubleValue();
+
     }
 }
