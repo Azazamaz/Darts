@@ -58,7 +58,11 @@ public class NewGameActivity extends AppCompatActivity {
         addNewPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addPlayerDialog();
+                if (playersList.size() < 2) {
+                    addPlayerDialog();
+                } else {
+                    Toast.makeText(NewGameActivity.this, "Already have 2 players!", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
