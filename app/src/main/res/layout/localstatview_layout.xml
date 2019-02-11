@@ -14,7 +14,9 @@
             android:id="@+id/statP1Name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:paddingStart="10dp"
+            android:paddingEnd="0dp"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -48,7 +50,9 @@
             android:id="@+id/statP2Name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:paddingStart="10dp"
+            android:paddingEnd="0dp"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"

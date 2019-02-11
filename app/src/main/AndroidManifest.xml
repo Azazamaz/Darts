@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".NewGameActivity" />
         <activity android:name=".PlayGameActivity" />
+        <activity android:name=".LocalStatActivity"></activity>
     </application>
 
 </manifest>
