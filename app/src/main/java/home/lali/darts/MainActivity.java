@@ -17,13 +17,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button newGameBtn;
+        Button localStatBtn;
 
         newGameBtn = findViewById(R.id.newGame_btn);
+        localStatBtn = findViewById(R.id.statistic_btn);
 
         newGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NewGameActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        localStatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LocalStatActivity.class);
                 startActivity(intent);
             }
         });
