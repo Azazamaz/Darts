@@ -1,6 +1,6 @@
-package home.lali.darts;
+package home.lali.darts.model;
 
-class DartsPlayer {
+public class DartsPlayer {
     private String playerName;
     private int score;
     private int legW;
@@ -9,7 +9,7 @@ class DartsPlayer {
     private double matchAvg;
     private boolean legStart;
 
-    DartsPlayer(){
+    public DartsPlayer(){
         playerName = "Darts Player";
         score = 0;
         legW = 0;
@@ -19,59 +19,59 @@ class DartsPlayer {
         legStart = false;
     }
 
-    String getPlayerName(){
+    public String getPlayerName(){
         return playerName;
     }
 
-    void setPlayerName(String playerName){
+    public void setPlayerName(String playerName){
         this.playerName = playerName;
     }
 
-    int getScore(){
+    public int getScore(){
         return score;
     }
 
-    void setScore(int score){
+    public void setScore(int score){
         this.score = score;
     }
 
-    int getLegW () {
+    public int getLegW () {
         return legW;
     }
 
-    void setLegW(int legW){
+    public void setLegW(int legW){
         this.legW = legW;
     }
 
-    double getLegAvg(){
+    public double getLegAvg(){
         return legAvg;
     }
 
-    void setLegAvg(double legAvg){
+    public void setLegAvg(double legAvg){
         this.legAvg = legAvg;
     }
 
-    double getMatchAvg(){
+    public double getMatchAvg(){
         return matchAvg;
     }
 
-    void setMatchAvg(double matchAvg){
+    public void setMatchAvg(double matchAvg){
         this.matchAvg = matchAvg;
     }
 
-    int getLastScore(){
+    public int getLastScore(){
         return lastScore;
     }
 
-    void setLastScore(int lastScore){
+    public void setLastScore(int lastScore){
         this.lastScore = lastScore;
     }
 
-    boolean getLegStart() {
+    public boolean getLegStart() {
         return legStart;
     }
 
-    void setLegStart(boolean legStart){
+    public void setLegStart(boolean legStart){
         this.legStart = legStart;
     }
 }
