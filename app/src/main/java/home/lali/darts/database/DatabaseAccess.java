@@ -1,19 +1,18 @@
-package home.lali.darts;
+package home.lali.darts.database;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 public class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
     private static DatabaseAccess instance;
 
-    public DatabaseAccess(Context context){
+    private DatabaseAccess(Context context){
         this.openHelper = new DatabaseOpenHelper(context);
     }
 
@@ -43,5 +42,30 @@ public class DatabaseAccess {
         String checkout_str = cursor.getString(0);
         cursor.close();
         return checkout_str;
+    }
+
+    public void saveLocalGameStat(String p1name, int p1L, double p1Avg, String p2name, int p2L, double p2Avg) {
+        try {
+            String sql = "INSERT INTO LocalStats (p1Name, p1Leg, p1Avg, p2Name, p2Leg, p2Avg) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
+            SQLiteStatement stmt = database.compileStatement(sql);
+
+            stmt.bindString(1, p1name);
+            stmt.bindLong(2, p1L);
+            stmt.bindDouble(3, p1Avg);
+            stmt.bindString(4, p2name);
+            stmt.bindLong(5, p2L);
+            stmt.bindDouble(6, p2Avg);
+
+            stmt.executeInsert();
+
+            stmt.close();
+        } catch (Exception e) {
+            Log.e("Insert Exception", e.getMessage());
+        }
+    }
+
+    public Cursor getLocalResults() {
+        return database.rawQuery("SELECT * FROM LocalStats", null);
     }
 }
