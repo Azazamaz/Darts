@@ -25,7 +25,15 @@
             android:layout_below="@id/newGame_btn"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="@string/statistics"/>
+            android:text="@string/localStatistics"/>
+        <Button
+            android:id="@+id/globalStat_btn"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/statistic_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/globalStat"/>
 
     </RelativeLayout>
 
