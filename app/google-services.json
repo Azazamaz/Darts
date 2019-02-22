@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "134114850921",
+    "firebase_url": "https://darts2-c4959.firebaseio.com",
+    "project_id": "darts2-c4959",
+    "storage_bucket": "darts2-c4959.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134114850921:android:ff349f1f5868db10",
+        "android_client_info": {
+          "package_name": "home.lali.darts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134114850921-ei26393om80p2umo4d31j0455rg0166l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "home.lali.darts",
+            "certificate_hash": "e94aa0eb1a061829430b68de9fb41b29cae3ec85"
+          }
+        },
+        {
+          "client_id": "134114850921-e3a587eo7pn609pn5gqif2uio4p0vuf8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcHLLacaroDlu_iVcF6f2593paRBKmY0Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134114850921-e3a587eo7pn609pn5gqif2uio4p0vuf8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
