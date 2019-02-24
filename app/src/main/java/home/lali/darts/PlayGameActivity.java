@@ -2,6 +2,8 @@ package home.lali.darts;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +16,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -64,12 +69,19 @@ public class PlayGameActivity extends AppCompatActivity {
     private double legAvg_help2 = 0;
     private double matchAvg_help2 = 0;
 
+    private boolean onlinePlay;
+
+    private String currentKey;
+
     private DatabaseAccess databaseAccess;
+    private DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
+
+        databaseRef = FirebaseDatabase.getInstance().getReference().child("online_matches");
 
         initFields();
 
@@ -82,6 +94,12 @@ public class PlayGameActivity extends AppCompatActivity {
 
         ok_btn.setOnClickListener(okBtnFunction);
         reset.setOnClickListener(resetScore);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        databaseRef.child(currentKey).child("live").setValue(false);
     }
 
     /**
@@ -151,12 +169,16 @@ public class PlayGameActivity extends AppCompatActivity {
         ArrayList<String> players;
 
         if (bundle != null) {
+            currentKey = bundle.getString("CURRENT_KEY");
+            onlinePlay = bundle.getBoolean("ONLINE_PLAY");
             gameMode = Integer.parseInt(bundle.getString("GAME_MODE"));
             legNumber = bundle.getInt("LEG_NUMBER");
             players = bundle.getStringArrayList("PLAYERS_LIST");
 
             Log.i("Játékmód: ", Integer.toString(gameMode));
             Log.i("Legek száma: ", Integer.toString(legNumber));
+            Log.i("OnlinePlayValue", String.valueOf(onlinePlay));
+            Log.i("Current key", currentKey);
 
             player1.setPlayerName(players.get(0));
             player1.setScore(gameMode);
@@ -303,10 +325,18 @@ public class PlayGameActivity extends AppCompatActivity {
     View.OnClickListener okBtnFunction = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if ((okBtnPress % 2) == 0) {
-                player1Round();
-            } else if ((okBtnPress % 2) == 1) {
-                player2Round();
+            if (onlinePlay) {
+                if ((okBtnPress % 2) == 0) {
+                    onlinePlayer1Round();
+                } else if ((okBtnPress % 2) == 1) {
+                    onlinePlayer2Round();
+                }
+            } else if (!onlinePlay) {
+                if ((okBtnPress % 2) == 0) {
+                    player1Round();
+                } else if ((okBtnPress % 2) == 1) {
+                    player2Round();
+                }
             }
         }
     };
@@ -379,8 +409,8 @@ public class PlayGameActivity extends AppCompatActivity {
             if (player1.getLegW() == (legNumber / 2 + 1)) {
                 matchWinnerDialog(player1).show();
 
-                double p1Avg = round(player1.getMatchAvg(), 2);
-                double p2Avg = round(player2.getMatchAvg(), 2);
+                double p1Avg = numberRound(player1.getMatchAvg(), 2);
+                double p2Avg = numberRound(player2.getMatchAvg(), 2);
 
                 databaseAccess.open();
                 databaseAccess.saveLocalGameStat(player1.getPlayerName(), player1.getLegW(), p1Avg,
@@ -389,8 +419,7 @@ public class PlayGameActivity extends AppCompatActivity {
             }
 
         } catch (Exception ex) {
-            Toast.makeText(PlayGameActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
-            Log.e("DARTS", "Exception:" + Log.getStackTraceString(ex));
+            Log.e("DARTS", ex.getMessage());
         }
     }
 
@@ -452,8 +481,8 @@ public class PlayGameActivity extends AppCompatActivity {
             if (player2.getLegW() == (legNumber / 2 + 1)) {
                 matchWinnerDialog(player2).show();
 
-                double p1Avg = round(player1.getMatchAvg(), 2);
-                double p2Avg = round(player2.getMatchAvg(), 2);
+                double p1Avg = numberRound(player1.getMatchAvg(), 2);
+                double p2Avg = numberRound(player2.getMatchAvg(), 2);
 
                 databaseAccess.open();
                 databaseAccess.saveLocalGameStat(player1.getPlayerName(), player1.getLegW(), p1Avg,
@@ -462,7 +491,180 @@ public class PlayGameActivity extends AppCompatActivity {
 
             }
         } catch (Exception ex) {
-            Toast.makeText(PlayGameActivity.this, "Score field is empty!", Toast.LENGTH_LONG).show();
+            Log.e("DARTS", ex.getMessage());
+        }
+    }
+
+    private void onlinePlayer1Round() {
+        if (isOnline()) {
+            try {
+                int score_helper;
+                score_helper = Integer.parseInt(String.valueOf(enterScore1.getText()));
+
+                if (score_helper > 180) {
+                    Toast.makeText(PlayGameActivity.this, "This is impossible with 3 darts!", Toast.LENGTH_LONG).show();
+                } else {
+
+                    if (player1.getScore() - score_helper < 0) {
+                        Toast.makeText(PlayGameActivity.this, "Not possible!", Toast.LENGTH_LONG).show();
+                    } else if (player1.getScore() - score_helper == 0 && player1.getScore() == 180) {
+                        Toast.makeText(PlayGameActivity.this, "180 is not checkout!", Toast.LENGTH_LONG).show();
+                    } else {
+                        matchRounds1++;
+                        legRounds1++;
+                        okBtnPress++;
+
+                        player1.setScore(player1.getScore() - score_helper);
+                        score1.setText(String.valueOf(player1.getScore()));
+                        player1.setLastScore(score_helper);
+
+                        ///Kiszállózás
+                        getPlayerCheckout(player1, score1, checkout1);
+
+                        legAvg_help1 += score_helper;
+                        matchAvg_help1 += score_helper;
+
+                        player1.setLegAvg(legAvg_help1 / legRounds1);
+                        player1.setMatchAvg(matchAvg_help1 / matchRounds1);
+
+                        legAvg1.setText(String.valueOf(player1.getLegAvg()));
+                        matchAvg1.setText(String.valueOf(player1.getMatchAvg()));
+
+                        enterScore1.setText("");
+                        enterScore2.requestFocus();
+
+                        databaseRef.child(currentKey).child("score1").setValue(player1.getScore());
+                        double p1Avg = numberRound(player1.getMatchAvg(), 2);
+                        databaseRef.child(currentKey).child("avg_1").setValue(p1Avg);
+                    }
+                }
+
+                //Legek végét figyelő kódrész.
+                if (Integer.parseInt(String.valueOf(score1.getText())) == 0) {
+                    legWinnerDialog(player1).show();
+                    legRounds1 = 0;
+                    legAvg_help1 = 0;
+                    player1.setLegW(player1.getLegW() + 1);
+                    legsWon1.setText(String.valueOf(player1.getLegW()));
+                    score1.setText(String.valueOf(gameMode));
+                    player1.setScore(gameMode);
+                    score2.setText(String.valueOf(gameMode));
+                    player2.setScore(gameMode);
+                    checkout2.setText("");
+
+                    databaseRef.child(currentKey).child("legW_1").setValue(player1.getLegW());
+                    databaseRef.child(currentKey).child("score1").setValue(gameMode);
+                    databaseRef.child(currentKey).child("score2").setValue(gameMode);
+
+                    setLegStartPlayer(player1, player2);
+                }
+
+
+                if (player1.getLegW() == (legNumber / 2 + 1)) {
+                    matchWinnerDialog(player1).show();
+
+                    double p1Avg = numberRound(player1.getMatchAvg(), 2);
+                    double p2Avg = numberRound(player2.getMatchAvg(), 2);
+
+                    databaseAccess.open();
+                    databaseAccess.saveLocalGameStat(player1.getPlayerName(), player1.getLegW(), p1Avg,
+                            player2.getPlayerName(), player2.getLegW(), p2Avg);
+                    databaseAccess.close();
+
+                    databaseRef.child(currentKey).child("live").setValue(false);
+                }
+
+            } catch (Exception ex) {
+                Log.e("OnlinePlay", ex.getMessage());
+            }
+        } else {
+            noInternetPlayer1().show();
+        }
+    }
+
+    private void onlinePlayer2Round() {
+        if (isOnline()) {
+            try {
+                int score_helper;
+                score_helper = Integer.parseInt(String.valueOf(enterScore2.getText()));
+
+                if (score_helper > 180) {
+                    Toast.makeText(PlayGameActivity.this, "This is impossible with 3 darts!", Toast.LENGTH_LONG).show();
+                } else {
+                    if (player2.getScore() - score_helper < 0) {
+                        Toast.makeText(PlayGameActivity.this, "Not possible!", Toast.LENGTH_LONG).show();
+                    } else if (player2.getScore() - score_helper == 0 && player2.getScore() == 180) {
+                        Toast.makeText(PlayGameActivity.this, "180 is not checkout!", Toast.LENGTH_LONG).show();
+                    } else {
+                        matchRounds2++;
+                        legRounds2++;
+                        okBtnPress++;
+
+                        player2.setScore(player2.getScore() - score_helper);
+                        score2.setText(String.valueOf(player2.getScore()));
+                        player2.setLastScore(score_helper);
+
+                        ///Kiszállók
+                        getPlayerCheckout(player2, score2, checkout2);
+
+                        legAvg_help2 += score_helper;
+                        matchAvg_help2 += score_helper;
+
+                        player2.setLegAvg(legAvg_help2 / legRounds2);
+                        player2.setMatchAvg(matchAvg_help2 / matchRounds2);
+
+                        legAvg2.setText(String.valueOf(player2.getLegAvg()));
+                        matchAvg2.setText(String.valueOf(player2.getMatchAvg()));
+
+                        enterScore2.setText("");
+                        enterScore1.requestFocus();
+
+                        databaseRef.child(currentKey).child("score2").setValue(player2.getScore());
+                        double p2Avg = numberRound(player2.getMatchAvg(), 2);
+                        databaseRef.child(currentKey).child("avg_2").setValue(p2Avg);
+                    }
+                }
+
+                //Legek végét figyelő kódrész.
+                if (Integer.parseInt(String.valueOf(score2.getText())) == 0) {
+                    legWinnerDialog(player2).show();
+                    legRounds2 = 0;
+                    legAvg_help2 = 0;
+                    player2.setLegW(player2.getLegW() + 1);
+                    legsWon2.setText(String.valueOf(player2.getLegW()));
+                    score2.setText(String.valueOf(gameMode));
+                    player2.setScore(gameMode);
+
+                    score1.setText(String.valueOf(gameMode));
+                    player1.setScore(gameMode);
+                    checkout1.setText("");
+
+                    databaseRef.child(currentKey).child("legW_2").setValue(player2.getLegW());
+                    databaseRef.child(currentKey).child("score1").setValue(gameMode);
+                    databaseRef.child(currentKey).child("score2").setValue(gameMode);
+
+                    setLegStartPlayer(player1, player2);
+                }
+
+                if (player2.getLegW() == (legNumber / 2 + 1)) {
+                    matchWinnerDialog(player2).show();
+
+                    double p1Avg = numberRound(player1.getMatchAvg(), 2);
+                    double p2Avg = numberRound(player2.getMatchAvg(), 2);
+
+                    databaseAccess.open();
+                    databaseAccess.saveLocalGameStat(player1.getPlayerName(), player1.getLegW(), p1Avg,
+                            player2.getPlayerName(), player2.getLegW(), p2Avg);
+                    databaseAccess.close();
+
+                    databaseRef.child(currentKey).child("live").setValue(false);
+
+                }
+            } catch (Exception ex) {
+                Log.e("OnlinePlay", ex.getMessage());
+            }
+        } else {
+            noInternetPlayer2().show();
         }
     }
 
@@ -590,11 +792,67 @@ public class PlayGameActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    private double round(double val, int places) {
-        if (places < 0) throw new IllegalArgumentException();
+    private double numberRound(double val, int places) {
+        if (places <= 0) throw new IllegalArgumentException();
 
         BigDecimal bd = new BigDecimal(val);
         return bd.setScale(places, RoundingMode.HALF_UP).doubleValue();
+    }
 
+
+    private AlertDialog noInternetPlayer1() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(PlayGameActivity.this);
+
+        builder.setIcon(R.mipmap.offline_icon)
+                .setTitle("No internet")
+                .setMessage("Lost internet connection!")
+                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onlinePlayer1Round();
+                    }
+                })
+                .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        return builder.create();
+    }
+
+    private AlertDialog noInternetPlayer2() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(PlayGameActivity.this);
+
+        builder.setIcon(R.mipmap.offline_icon)
+                .setTitle("No internet")
+                .setMessage("Lost internet connection")
+                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onlinePlayer2Round();
+                    }
+                })
+                .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        return builder.create();
+    }
+
+    private boolean isOnline() {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+
+            return networkInfo != null && networkInfo.isConnectedOrConnecting();
+        } catch (Exception e) {
+            Log.e("isOnlineError", e.getMessage());
+            return false;
+        }
     }
 }

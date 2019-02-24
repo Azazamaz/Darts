@@ -1,9 +1,14 @@
 package home.lali.darts;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +19,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
+
+import home.lali.darts.model.OnlineMatches;
 
 
 public class NewGameActivity extends AppCompatActivity {
@@ -26,15 +36,28 @@ public class NewGameActivity extends AppCompatActivity {
 
     private EditText addedPlayerName;
 
+    private Button startGame;
+    private Button startOnlineGame;
+
     private ArrayList<String> playersList = new ArrayList<>();
+
+    private boolean onlineGame;
+
+    private DatabaseReference databaseRef;
+
+    private String currentKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_game);
 
-        Button startGame;
+        databaseRef = FirebaseDatabase.getInstance().getReference().child("online_matches");
+
         Button addNewPlayer;
+
+        Bundle bundle = getIntent().getExtras();
+        onlineGame = bundle.getBoolean("ONLINE_GAME");
 
         gameModes = findViewById(R.id.gamemode_spinner);
         legsNumber = findViewById(R.id.legsnumber_spinner);
@@ -43,13 +66,13 @@ public class NewGameActivity extends AppCompatActivity {
         startGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (playersList.size() < 2){
-                    Toast.makeText(NewGameActivity.this,
-                            "Add 2 players!", Toast.LENGTH_LONG).show();
-                } else {
+                if (playersList.size() == 2) {
                     Intent intent = new Intent(NewGameActivity.this, PlayGameActivity.class);
+                    intent.putExtra("ONLINE_PLAY", false);
                     intent.putExtras(setInformation());
                     startActivity(intent);
+                } else {
+                    Toast.makeText(NewGameActivity.this, "Add 2 players", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -65,6 +88,45 @@ public class NewGameActivity extends AppCompatActivity {
                 }
             }
         });
+
+        startOnlineGame = findViewById(R.id.startOnlineGame_btn);
+        startOnlineGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Online játék beállítások
+                if (isOnline()) {
+                    if (playersList.size() == 2) {
+                        try {
+                            OnlineMatches onlineMatch = new OnlineMatches(playersList.get(0), 0,
+                                    Integer.valueOf(gameModes.getSelectedItem().toString()),
+                                    playersList.get(1), 0,
+                                    Integer.valueOf(gameModes.getSelectedItem().toString()), true);
+
+                            currentKey = databaseRef.push().getKey();
+                            databaseRef.child(currentKey).setValue(onlineMatch);
+                            Log.i("SuccessUpload", "Match uploaded successfully!");
+
+
+                            Intent intent = new Intent(NewGameActivity.this, PlayGameActivity.class);
+                            intent.putExtra("ONLINE_PLAY", true);
+                            intent.putExtra("CURRENT_KEY", currentKey);
+                            intent.putExtras(setInformation());
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            Log.e("UploadOnlineError", e.getMessage());
+                        }
+                    } else {
+                        Toast.makeText(NewGameActivity.this, "Add 2 players", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    noInternet().show();
+                }
+            }
+        });
+
+        startGame.setEnabled(false);
+        startOnlineGame.setEnabled(false);
+
     }
 
     /**
@@ -101,7 +163,6 @@ public class NewGameActivity extends AppCompatActivity {
 
         return bundle;
     }
-
 
     /**
      * Új játékos hozzáadása.
@@ -147,11 +208,78 @@ public class NewGameActivity extends AppCompatActivity {
 
                     playersList.add(addedPlayerName.getText().toString());
 
+                    if (playersList.size() == 2 && onlineGame) {
+                        startOnlineGame.setEnabled(true);
+                    } else if (playersList.size() == 2 && !onlineGame) {
+                        startGame.setEnabled(true);
+                    }
+
                     dialog.dismiss();
                 }
             }
         });
 
         dialog.show();
+    }
+
+    private boolean isOnline() {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+
+            return networkInfo != null && networkInfo.isConnectedOrConnecting();
+        } catch (Exception e) {
+            Log.e("isOnline", e.getMessage());
+            return false;
+        }
+    }
+
+    private AlertDialog noInternet() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(NewGameActivity.this);
+
+        builder.setIcon(R.mipmap.offline_icon)
+                .setTitle("No internet")
+                .setMessage("Lost internet connection!")
+                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (isOnline()) {
+                            //TODO: Online beállítások
+                            try {
+                                if (playersList.size() == 2) {
+                                    OnlineMatches onlineMatch = new OnlineMatches(playersList.get(0), 0,
+                                            Integer.valueOf(gameModes.getSelectedItem().toString()),
+                                            playersList.get(1), 0,
+                                            Integer.valueOf(gameModes.getSelectedItem().toString()), true);
+
+                                    currentKey = databaseRef.push().getKey();
+                                    databaseRef.child(currentKey).setValue(onlineMatch);
+                                    Log.i("trySuccessUpload", "Successfull try again upload!");
+
+                                    Intent intent = new Intent(NewGameActivity.this, PlayGameActivity.class);
+                                    intent.putExtra("ONLINE_PLAY", true);
+                                    intent.putExtra("CURRENT_KEY", currentKey);
+                                    intent.putExtras(setInformation());
+                                    startActivity(intent);
+
+                                } else {
+                                    Toast.makeText(NewGameActivity.this, "Add 2 players!", Toast.LENGTH_LONG).show();
+                                }
+                            } catch (Exception e) {
+                                Log.e("UploadOnlineError", e.getMessage());
+                            }
+                        } else {
+                            noInternet().show();
+                        }
+                    }
+                })
+                .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        return builder.create();
     }
 }
