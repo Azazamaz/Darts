@@ -13,10 +13,10 @@
     <string name="reset_score_str">Reset %1$s\' last score?</string>
     <string name="leg_number">Leg Number</string>
     <string name="set_number">Set Number</string>
-    <string name="start_game">Start Game</string>
+    <string name="start_offline_game">Start Offline Game</string>
     <string name="add_player">Add Player</string>
     <string name="players">Players</string>
-    <string name="new_game">New Game</string>
+    <string name="new_game_offline">New Offline Game</string>
     <string name="localStatistics">Local statistics</string>
     <string name="ok_text">OK</string>
     <string name="reset_score">Reset score</string>
@@ -24,4 +24,8 @@
     <string name="player_name">Player name</string>
     <string name="result">Result</string>
     <string name="match_avg">Match Avg</string>
+    <string name="new_online_game">New Online Game</string>
+    <string name="start_online_game">Start Online Game</string>
+    <string name="current_score">Match score</string>
+    <string name="live_games">Live games</string>
 </resources>

@@ -2,10 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="home.lali.darts">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +21,9 @@
         </activity>
         <activity android:name=".NewGameActivity" />
         <activity android:name=".PlayGameActivity" />
-        <activity android:name=".LocalStatActivity"></activity>
+        <activity android:name=".LocalStatActivity" />
+        <activity android:name=".GlobalStatActivity" />
+        <activity android:name=".LiveMatchActivity" />
     </application>
 
 </manifest>
