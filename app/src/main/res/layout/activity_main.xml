@@ -15,14 +15,30 @@
             android:id="@+id/newGame_btn"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="@string/new_game"
+            android:text="@string/new_game_offline"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="100dp"/>
+        <Button
+            android:id="@+id/newOnlineGame_btn"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/newGame_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/new_online_game"/>
+        <Button
+            android:id="@+id/liveGames_btn"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/newOnlineGame_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/live_games"/>
         <Button
             android:id="@+id/statistic_btn"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/newGame_btn"
+            android:layout_below="@id/liveGames_btn"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="@string/localStatistics"/>
