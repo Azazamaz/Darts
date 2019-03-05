@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -56,8 +58,28 @@ public class NewGameActivity extends AppCompatActivity {
 
         Button addNewPlayer;
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         Bundle bundle = getIntent().getExtras();
         onlineGame = bundle.getBoolean("ONLINE_GAME");
+        if (user != null) {
+            playersList.add(bundle.getString("CURRENT_USER"));
+            scrollableLayout = findViewById(R.id.scrollNamesLayout);
+            TextView player_tv = new TextView(getApplicationContext());
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
+                    (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+            layoutParams.setMargins(0, 10, 0, 10);
+
+            player_tv.setLayoutParams(layoutParams);
+            player_tv.setText(bundle.getString("CURRENT_USER"));
+            player_tv.setTextSize(20);
+            player_tv.setTextColor(getResources().getColor(R.color.black));
+            player_tv.setGravity(Gravity.CENTER_HORIZONTAL);
+
+            scrollableLayout.addView(player_tv);
+        }
 
         gameModes = findViewById(R.id.gamemode_spinner);
         legsNumber = findViewById(R.id.legsnumber_spinner);
@@ -166,8 +188,8 @@ public class NewGameActivity extends AppCompatActivity {
 
     /**
      * Új játékos hozzáadása.
-     * */
-    private void addPlayerDialog(){
+     */
+    private void addPlayerDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         final View playerDialogView = inflater.inflate(R.layout.addplayer_layout, null);
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
@@ -186,7 +208,7 @@ public class NewGameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 addedPlayerName = playerDialogView.findViewById(R.id.newplayerName_et);
 
-                if (addedPlayerName.getText().length() < 3){
+                if (addedPlayerName.getText().length() < 3) {
                     Toast.makeText(NewGameActivity.this, "Name must be at least 3 charachters!", Toast.LENGTH_LONG).show();
                 } else {
                     scrollableLayout = findViewById(R.id.scrollNamesLayout);
@@ -196,7 +218,7 @@ public class NewGameActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-                    layoutParams.setMargins(0,10,0,10);
+                    layoutParams.setMargins(0, 10, 0, 10);
 
                     player_tv.setLayoutParams(layoutParams);
                     player_tv.setText(addedPlayerName.getText());

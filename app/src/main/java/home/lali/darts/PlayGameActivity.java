@@ -99,7 +99,9 @@ public class PlayGameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        databaseRef.child(currentKey).child("live").setValue(false);
+        if (onlinePlay) {
+            databaseRef.child(currentKey).child("live").setValue(false);
+        }
     }
 
     /**
@@ -169,7 +171,6 @@ public class PlayGameActivity extends AppCompatActivity {
         ArrayList<String> players;
 
         if (bundle != null) {
-            currentKey = bundle.getString("CURRENT_KEY");
             onlinePlay = bundle.getBoolean("ONLINE_PLAY");
             gameMode = Integer.parseInt(bundle.getString("GAME_MODE"));
             legNumber = bundle.getInt("LEG_NUMBER");
@@ -178,7 +179,6 @@ public class PlayGameActivity extends AppCompatActivity {
             Log.i("Játékmód: ", Integer.toString(gameMode));
             Log.i("Legek száma: ", Integer.toString(legNumber));
             Log.i("OnlinePlayValue", String.valueOf(onlinePlay));
-            Log.i("Current key", currentKey);
 
             player1.setPlayerName(players.get(0));
             player1.setScore(gameMode);
@@ -190,6 +190,11 @@ public class PlayGameActivity extends AppCompatActivity {
             score1.setText(String.valueOf(player1.getScore()));
             playerName2.setText(player2.getPlayerName());
             score2.setText(String.valueOf(player2.getScore()));
+
+            if (onlinePlay) {
+                currentKey = bundle.getString("CURRENT_KEY");
+                Log.d("Current key", currentKey);
+            }
         }
     }
 
@@ -798,7 +803,6 @@ public class PlayGameActivity extends AppCompatActivity {
         BigDecimal bd = new BigDecimal(val);
         return bd.setScale(places, RoundingMode.HALF_UP).doubleValue();
     }
-
 
     private AlertDialog noInternetPlayer1() {
         AlertDialog.Builder builder = new AlertDialog.Builder(PlayGameActivity.this);
