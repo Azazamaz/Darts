@@ -94,7 +94,7 @@ public class NewGameActivity extends AppCompatActivity {
                     intent.putExtras(setInformation());
                     startActivity(intent);
                 } else {
-                    Toast.makeText(NewGameActivity.this, "Add 2 players", Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewGameActivity.this, R.string.add_players, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -106,7 +106,7 @@ public class NewGameActivity extends AppCompatActivity {
                 if (playersList.size() < 2) {
                     addPlayerDialog();
                 } else {
-                    Toast.makeText(NewGameActivity.this, "Already have 2 players!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewGameActivity.this, R.string.have_players, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -138,7 +138,7 @@ public class NewGameActivity extends AppCompatActivity {
                             Log.e("UploadOnlineError", e.getMessage());
                         }
                     } else {
-                        Toast.makeText(NewGameActivity.this, "Add 2 players", Toast.LENGTH_LONG).show();
+                        Toast.makeText(NewGameActivity.this, R.string.add_players, Toast.LENGTH_LONG).show();
                     }
                 } else {
                     noInternet().show();
@@ -209,7 +209,7 @@ public class NewGameActivity extends AppCompatActivity {
                 addedPlayerName = playerDialogView.findViewById(R.id.newplayerName_et);
 
                 if (addedPlayerName.getText().length() < 3) {
-                    Toast.makeText(NewGameActivity.this, "Name must be at least 3 charachters!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewGameActivity.this, R.string.min_name_length, Toast.LENGTH_LONG).show();
                 } else {
                     scrollableLayout = findViewById(R.id.scrollNamesLayout);
 
@@ -260,9 +260,9 @@ public class NewGameActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(NewGameActivity.this);
 
         builder.setIcon(R.mipmap.offline_icon)
-                .setTitle("No internet")
-                .setMessage("Lost internet connection!")
-                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.no_internet)
+                .setMessage(R.string.lost_internet_connection)
+                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (isOnline()) {
@@ -276,7 +276,7 @@ public class NewGameActivity extends AppCompatActivity {
 
                                     currentKey = databaseRef.push().getKey();
                                     databaseRef.child(currentKey).setValue(onlineMatch);
-                                    Log.i("trySuccessUpload", "Successfull try again upload!");
+                                    Log.i("trySuccessUpload", "Successful try again upload!");
 
                                     Intent intent = new Intent(NewGameActivity.this, PlayGameActivity.class);
                                     intent.putExtra("ONLINE_PLAY", true);
@@ -285,7 +285,7 @@ public class NewGameActivity extends AppCompatActivity {
                                     startActivity(intent);
 
                                 } else {
-                                    Toast.makeText(NewGameActivity.this, "Add 2 players!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(NewGameActivity.this, R.string.add_players, Toast.LENGTH_LONG).show();
                                 }
                             } catch (Exception e) {
                                 Log.e("UploadOnlineError", e.getMessage());
@@ -295,7 +295,7 @@ public class NewGameActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

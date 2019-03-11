@@ -31,4 +31,23 @@
     <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign out</string>
     <string name="welcome_user">Welcome %l$s!</string>
+    <string name="applogo">AppLogo</string>
+    <string name="match_winner">Match Winner</string>
+    <string name="leg_winner">Leg winner</string>
+    <string name="no_internet">No internet</string>
+    <string name="lost_internet_connection">Lost internet connection!</string>
+    <string name="try_again">Try again</string>
+    <string name="back">Back</string>
+    <string name="invalid3darts">This is impossible with 3 darts!</string>
+    <string name="not_possible">Not possible!</string>
+    <string name="no180checkout">180 is not checkout!</string>
+    <string name="signed_out">Signed out!</string>
+    <string name="signed_in">Signed in!</string>
+    <string name="sign_in_cancel">Sign in canceled!</string>
+    <string name="use_sign_in">Use \'Sign in\' from menubar and try again!</string>
+    <string name="add_players">Add 2 players</string>
+    <string name="have_players">Already have 2 players!</string>
+    <string name="min_name_length">Name length must be at least 3 charachters long!</string>
+    <string name="empty_stats">Empty Stats</string>
+    <string name="no_local_match">No local match found!</string>
 </resources>

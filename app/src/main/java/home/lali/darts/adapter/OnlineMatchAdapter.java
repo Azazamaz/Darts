@@ -1,5 +1,6 @@
 package home.lali.darts.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +20,14 @@ public class OnlineMatchAdapter extends RecyclerView.Adapter<OnlineMatchAdapter.
         this.matchList = matchList;
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override @NonNull
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.globalstat_item_layout, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int pos) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int pos) {
         holder.name1.setText(matchList.get(pos).getName1());
         holder.leg1.setText(String.valueOf(matchList.get(pos).getLegW_1()));
         holder.avg1.setText(String.valueOf(matchList.get(pos).getAvg_1()));
@@ -40,18 +41,18 @@ public class OnlineMatchAdapter extends RecyclerView.Adapter<OnlineMatchAdapter.
         return matchList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         View view;
 
-        public TextView name1;
-        public TextView leg1;
-        public TextView avg1;
-        public TextView name2;
-        public TextView leg2;
-        public TextView avg2;
+        TextView name1;
+        TextView leg1;
+        TextView avg1;
+        TextView name2;
+        TextView leg2;
+        TextView avg2;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             view = itemView;
 

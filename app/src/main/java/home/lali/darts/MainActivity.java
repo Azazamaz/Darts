@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
 
     private FirebaseAuth firebaseAuth;
+
+    private TextView userWelcomeTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
         liveGamesBtn = findViewById(R.id.liveGames_btn);
         localStatBtn = findViewById(R.id.statistic_btn);
         globalStatBtn = findViewById(R.id.globalStat_btn);
+        userWelcomeTv = findViewById(R.id.userWelcome_tv);
+
+        if (firebaseAuth.getCurrentUser() != null) {
+            userWelcomeTv.setText("Welcome " + firebaseAuth.getCurrentUser().getDisplayName() + "!");
+        }
 
         newGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,11 +140,12 @@ public class MainActivity extends AppCompatActivity {
                                     .build(),
                             RC_SIGN_IN);
                 } else {
-                    Toast.makeText(MainActivity.this, "Lost connection!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, R.string.lost_internet_connection, Toast.LENGTH_LONG).show();
                 }
             case R.id.sign_out_menu:
                 AuthUI.getInstance().signOut(MainActivity.this);
-                Toast.makeText(MainActivity.this, "Signed out!", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, R.string.signed_out, Toast.LENGTH_LONG).show();
+                userWelcomeTv.setText("");
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -148,9 +157,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(MainActivity.this, "Signed in!", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, R.string.signed_in, Toast.LENGTH_LONG).show();
+                userWelcomeTv.setText("Welcome " + firebaseAuth.getCurrentUser().getDisplayName() + "!");
             } else {
-                Toast.makeText(MainActivity.this, "Sign in canceled!", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, R.string.sign_in_cancel, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -186,9 +196,9 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog noInternet() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setIcon(R.mipmap.offline_icon)
-                .setTitle("No internet")
-                .setMessage("Lost internet connection")
-                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.no_internet)
+                .setMessage(R.string.lost_internet_connection)
+                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (isOnline()) {
@@ -221,9 +231,9 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
         builder.setIcon(R.mipmap.offline_icon)
-                .setTitle("No internet")
-                .setMessage("Lost internet connection")
-                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.no_internet)
+                .setMessage(R.string.lost_internet_connection)
+                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (isOnline()) {
@@ -234,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -247,9 +257,9 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog useSignIn() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-        builder.setTitle("Sign in")
-                .setMessage("Use \'Sign in\' from menubar and try again!")
-                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.sign_in)
+                .setMessage(R.string.use_sign_in)
+                .setNeutralButton(R.string.ok_text, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

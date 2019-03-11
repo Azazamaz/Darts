@@ -1,5 +1,6 @@
 package home.lali.darts.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +20,14 @@ public class LiveMatchAdapter extends RecyclerView.Adapter<LiveMatchAdapter.View
         this.liveScoreList = liveScoreList;
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override @NonNull
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.livescore_item_layout, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int pos) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int pos) {
         holder.name1.setText(liveScoreList.get(pos).getName1());
         holder.leg1.setText(String.valueOf(liveScoreList.get(pos).getLegW_1()));
         holder.score1.setText(String.valueOf(liveScoreList.get(pos).getScore1()));

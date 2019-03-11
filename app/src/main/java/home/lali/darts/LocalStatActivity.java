@@ -109,8 +109,8 @@ public class LocalStatActivity extends AppCompatActivity {
             }
         });
 
-        builder.setTitle("Empty Stats");
-        builder.setMessage("No local match found!");
+        builder.setTitle(R.string.empty_stats);
+        builder.setMessage(R.string.no_local_match);
 
         return builder.create();
     }

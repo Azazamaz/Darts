@@ -361,13 +361,13 @@ public class PlayGameActivity extends AppCompatActivity {
             score_helper = Integer.parseInt(String.valueOf(enterScore1.getText()));
 
             if (score_helper > 180) {
-                Toast.makeText(PlayGameActivity.this, "This is impossible with 3 darts!", Toast.LENGTH_LONG).show();
+                Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
             } else {
 
                 if (player1.getScore() - score_helper < 0) {
-                    Toast.makeText(PlayGameActivity.this, "Not possible!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
                 } else if (player1.getScore() - score_helper == 0 && player1.getScore() == 180) {
-                    Toast.makeText(PlayGameActivity.this, "180 is not checkout!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PlayGameActivity.this, R.string.no180checkout, Toast.LENGTH_LONG).show();
                 } else {
                     matchRounds1++;
                     legRounds1++;
@@ -434,12 +434,12 @@ public class PlayGameActivity extends AppCompatActivity {
             score_helper = Integer.parseInt(String.valueOf(enterScore2.getText()));
 
             if (score_helper > 180) {
-                Toast.makeText(PlayGameActivity.this, "This is impossible with 3 darts!", Toast.LENGTH_LONG).show();
+                Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
             } else {
                 if (player2.getScore() - score_helper < 0) {
-                    Toast.makeText(PlayGameActivity.this, "Not possible!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
                 } else if (player2.getScore() - score_helper == 0 && player2.getScore() == 180) {
-                    Toast.makeText(PlayGameActivity.this, "180 is not checkout!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PlayGameActivity.this, R.string.no180checkout, Toast.LENGTH_LONG).show();
                 } else {
                     matchRounds2++;
                     legRounds2++;
@@ -507,13 +507,13 @@ public class PlayGameActivity extends AppCompatActivity {
                 score_helper = Integer.parseInt(String.valueOf(enterScore1.getText()));
 
                 if (score_helper > 180) {
-                    Toast.makeText(PlayGameActivity.this, "This is impossible with 3 darts!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
                 } else {
 
                     if (player1.getScore() - score_helper < 0) {
-                        Toast.makeText(PlayGameActivity.this, "Not possible!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
                     } else if (player1.getScore() - score_helper == 0 && player1.getScore() == 180) {
-                        Toast.makeText(PlayGameActivity.this, "180 is not checkout!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(PlayGameActivity.this, R.string.no180checkout, Toast.LENGTH_LONG).show();
                     } else {
                         matchRounds1++;
                         legRounds1++;
@@ -594,12 +594,12 @@ public class PlayGameActivity extends AppCompatActivity {
                 score_helper = Integer.parseInt(String.valueOf(enterScore2.getText()));
 
                 if (score_helper > 180) {
-                    Toast.makeText(PlayGameActivity.this, "This is impossible with 3 darts!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
                 } else {
                     if (player2.getScore() - score_helper < 0) {
-                        Toast.makeText(PlayGameActivity.this, "Not possible!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
                     } else if (player2.getScore() - score_helper == 0 && player2.getScore() == 180) {
-                        Toast.makeText(PlayGameActivity.this, "180 is not checkout!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(PlayGameActivity.this, R.string.no180checkout, Toast.LENGTH_LONG).show();
                     } else {
                         matchRounds2++;
                         legRounds2++;
@@ -772,7 +772,7 @@ public class PlayGameActivity extends AppCompatActivity {
             }
         });
 
-        builder.setTitle("Match Winner");
+        builder.setTitle(R.string.match_winner);
         builder.setMessage(player.getPlayerName() + " is won the game!");
 
         return builder.create();
@@ -791,7 +791,7 @@ public class PlayGameActivity extends AppCompatActivity {
             }
         });
 
-        builder.setTitle("Leg winner");
+        builder.setTitle(R.string.leg_winner);
         builder.setMessage(player.getPlayerName() + " is won the leg. Confirm?");
 
         return builder.create();
@@ -808,15 +808,15 @@ public class PlayGameActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(PlayGameActivity.this);
 
         builder.setIcon(R.mipmap.offline_icon)
-                .setTitle("No internet")
-                .setMessage("Lost internet connection!")
-                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.no_internet)
+                .setMessage(R.string.lost_internet_connection)
+                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onlinePlayer1Round();
                     }
                 })
-                .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -830,15 +830,15 @@ public class PlayGameActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(PlayGameActivity.this);
 
         builder.setIcon(R.mipmap.offline_icon)
-                .setTitle("No internet")
-                .setMessage("Lost internet connection")
-                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.no_internet)
+                .setMessage(R.string.lost_internet_connection)
+                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         onlinePlayer2Round();
                     }
                 })
-                .setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
