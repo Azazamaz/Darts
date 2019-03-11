@@ -7,50 +7,80 @@
     android:background="@color/background"
     tools:context="home.lali.darts.MainActivity">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/userWelcome_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="24sp"
+        android:textColor="@color/colorPrimary"
+        android:maxLength="33"
+        android:layout_marginTop="40sp"/>
+
+    <TableLayout
+        android:id="@+id/table_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:weightSum="1"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="0dp">
 
-        <Button
-            android:id="@+id/newGame_btn"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:text="@string/new_game_offline"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp"/>
-        <Button
-            android:id="@+id/newOnlineGame_btn"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/newGame_btn"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="@string/new_online_game"/>
-        <Button
-            android:id="@+id/liveGames_btn"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/newOnlineGame_btn"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="@string/live_games"/>
-        <Button
-            android:id="@+id/statistic_btn"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/liveGames_btn"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="@string/localStatistics"/>
-        <Button
-            android:id="@+id/globalStat_btn"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/statistic_btn"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="@string/globalStat"/>
+        <TableRow android:layout_marginBottom="20sp">
 
-    </RelativeLayout>
+            <Button
+                android:id="@+id/newGame_btn"
+                android:layout_height="50sp"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/button_style"
+                android:text="@string/new_game_offline" />
+
+            <Button
+                android:id="@+id/newOnlineGame_btn"
+                android:layout_height="50sp"
+                android:layout_marginEnd="5sp"
+                android:layout_weight="0.5"
+                android:background="@drawable/button_style"
+                android:text="@string/new_online_game" />
+        </TableRow>
+
+        <TableRow android:layout_marginBottom="20sp">
+
+            <Button
+                android:id="@+id/liveGames_btn"
+                android:layout_height="50sp"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_weight="0.5"
+                android:background="@drawable/button_style"
+                android:text="@string/live_games" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/statistic_btn"
+                android:layout_height="50sp"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_weight="0.5"
+                android:background="@drawable/button_style"
+                android:text="@string/localStatistics" />
+
+            <Button
+                android:id="@+id/globalStat_btn"
+                android:layout_height="50sp"
+                android:layout_marginEnd="5sp"
+                android:layout_weight="0.5"
+
+                android:background="@drawable/button_style"
+                android:text="@string/globalStat" />
+        </TableRow>
+    </TableLayout>
 
 </android.support.constraint.ConstraintLayout>
