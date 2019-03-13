@@ -773,7 +773,7 @@ public class PlayGameActivity extends AppCompatActivity {
         });
 
         builder.setTitle(R.string.match_winner);
-        builder.setMessage(player.getPlayerName() + " is won the game!");
+        builder.setMessage(getString(R.string.game_winner, player.getPlayerName()));
 
         return builder.create();
     }
@@ -792,7 +792,7 @@ public class PlayGameActivity extends AppCompatActivity {
         });
 
         builder.setTitle(R.string.leg_winner);
-        builder.setMessage(player.getPlayerName() + " is won the leg. Confirm?");
+        builder.setMessage(getString(R.string.leg_win, player.getPlayerName()));
 
         return builder.create();
     }
