@@ -9,4 +9,7 @@
     <color name="white">#FFF</color>
     <color name="background">#FFF5EE</color>
     <color name="scoreBackground">#DC143C</color>
+    <color name="buttonStroke">#298716</color>
+    <color name="buttonBackground">#FFF5EE</color>
+    <color name="buttonDisBackground">#B4B0AF</color>
 </resources>

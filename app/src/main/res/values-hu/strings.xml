@@ -24,7 +24,7 @@
     <string name="globalStat">Globális statisztikák</string>
     <string name="player_name">Játékos neve</string>
     <string name="result">Eredmény</string>
-    <string name="match_avg">Mérkőzés átlag</string>
+    <string name="match_avg">Átlag</string>
     <string name="new_online_game">Új online játék</string>
     <string name="start_online_game">Online játék indítása</string>
     <string name="current_score">Pontszám</string>
@@ -51,4 +51,6 @@
     <string name="min_name_length">A névnek legalább 3 karakter hosszúnak kell lennie!</string>
     <string name="empty_stats">Üres statisztikák!</string>
     <string name="no_local_match">Nincs lokális mérkőzés!</string>
+    <string name="game_winner">%1$s nyerte a mérkőzést!</string>
+    <string name="leg_win">%1$s nyerte a leget!</string>
 </resources>
