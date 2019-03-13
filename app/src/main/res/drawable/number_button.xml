@@ -4,15 +4,15 @@
         <shape android:shape="rectangle">
             <corners android:radius="100dp" />
             <solid android:color="@color/buttonStroke" />
-            <size android:width="270dp" android:height="60dp" />
+            <size android:width="70dp" android:height="40dp" />
         </shape>
     </item>
 
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="100dp" />
+            <corners android:radius="100dp"/>
             <solid android:color="@color/buttonBackground" />
-            <size android:width="270dp" android:height="60dp" />
+            <size android:width="70dp" android:height="40dp" />
             <stroke android:width="2dp" android:color="@color/buttonStroke" />
         </shape>
     </item>

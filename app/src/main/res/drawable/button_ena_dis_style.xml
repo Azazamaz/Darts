@@ -3,18 +3,26 @@
     <item android:state_enabled="true">
         <shape android:shape="rectangle">
             <corners android:radius="100dp" />
-            <solid android:color="#FFF5EE" />
+            <solid android:color="@color/buttonBackground" />
             <size android:width="270dp" android:height="60dp" />
-            <stroke android:width="2dp" android:color="#298716" />
+            <stroke android:width="2dp" android:color="@color/buttonStroke" />
         </shape>
     </item>
 
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
             <corners android:radius="100dp" />
-            <solid android:color="#B4B0AF" />
+            <solid android:color="@color/buttonDisBackground" />
             <size android:width="270dp" android:height="60dp" />
-            <stroke android:width="2dp" android:color="#265F18" />
+            <stroke android:width="2dp" android:color="@color/buttonStroke" />
+        </shape>
+    </item>
+
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="100dp" />
+            <solid android:color="@color/buttonStroke" />
+            <size android:width="270dp" android:height="270dp" />
         </shape>
     </item>
 </selector>
