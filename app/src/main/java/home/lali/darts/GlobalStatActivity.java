@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import home.lali.darts.adapter.OnlineMatchAdapter;
+import home.lali.darts.adapter.RecyclerItemDecorator;
 import home.lali.darts.model.OnlineMatches;
 
 public class GlobalStatActivity extends AppCompatActivity {
@@ -46,6 +47,7 @@ public class GlobalStatActivity extends AppCompatActivity {
 
         mainList = findViewById(R.id.mainList);
         mainList.setHasFixedSize(true);
+        mainList.addItemDecoration(new RecyclerItemDecorator(this));
         mainList.setLayoutManager(new LinearLayoutManager(this));
         mainList.setAdapter(matchAdapter);
     }

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import home.lali.darts.adapter.LiveMatchAdapter;
+import home.lali.darts.adapter.RecyclerItemDecorator;
 import home.lali.darts.model.OnlineMatches;
 
 public class LiveMatchActivity extends AppCompatActivity {
@@ -45,6 +46,7 @@ public class LiveMatchActivity extends AppCompatActivity {
 
         scoreMainList = findViewById(R.id.liveMainList);
         scoreMainList.setHasFixedSize(true);
+		scoreMainList.addItemDecoration(new RecyclerItemDecorator(this));
         scoreMainList.setLayoutManager(new LinearLayoutManager(this));
         scoreMainList.setAdapter(liveMatchAdapter);
     }
