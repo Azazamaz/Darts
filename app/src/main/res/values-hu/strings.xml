@@ -53,4 +53,6 @@
     <string name="no_local_match">Nincs lokális mérkőzés!</string>
     <string name="game_winner">%1$s nyerte a mérkőzést!</string>
     <string name="leg_win">%1$s nyerte a leget!</string>
+    <string name="leg_avg">Leg átlag</string>
+    <string name="enter_score">Pontszám</string>
 </resources>

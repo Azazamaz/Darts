@@ -52,4 +52,6 @@
     <string name="no_local_match">No local match found!</string>
     <string name="game_winner">%1$s is won the game!</string>
     <string name="leg_win">%1$s is won the leg!</string>
+    <string name="leg_avg">Leg avg</string>
+    <string name="enter_score">Enter Score</string>
 </resources>
