@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/checkout_tv"
-            android:text="Leg avg"
+            android:text="@string/leg_avg"
             android:textSize="15sp"
             android:layout_marginStart="10dp"
             android:textColor="@color/colorPrimary"/>
@@ -98,7 +98,7 @@
             android:layout_below="@id/avgLeg_tv"
             android:layout_marginTop="2dp"
             android:layout_marginStart="10dp"
-            android:text="Match avg"
+            android:text="@string/match_avg"
             android:textSize="15sp"
             android:textColor="@color/colorPrimary"/>
 
@@ -107,8 +107,7 @@
             android:layout_width="50dp"
             android:layout_height="20dp"
             android:layout_below="@id/avgLeg_tv"
-            android:layout_toEndOf="@id/matchAvg_tv"
-            android:layout_marginStart="7dp"
+            android:layout_alignStart="@id/avgLeg_tv"
             android:layout_marginTop="2dp"
             android:textAlignment="center"
             android:background="@color/scoreBackground"
@@ -121,7 +120,7 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_below="@id/matchAvg_tv"
-            android:hint="Enter Score"
+            android:hint="@string/enter_score"
             android:inputType="number"
             android:textSize="18sp"
             android:textAlignment="center"
