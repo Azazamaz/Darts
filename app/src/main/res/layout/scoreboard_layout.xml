@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/legsWon_tv"
-            android:text="501"
+            android:text="@string/initNumb_str"
             android:layout_marginTop="15dp"
             android:layout_centerHorizontal="true"
             android:textSize="50sp"
@@ -87,7 +87,7 @@
             android:layout_marginStart="25dp"
             android:textAlignment="center"
             android:background="@color/scoreBackground"
-            android:text="0"
+            android:text="@string/initNumb_str"
             android:textSize="15sp"
             android:textColor="@color/white"/>
 
@@ -111,7 +111,7 @@
             android:layout_marginTop="2dp"
             android:textAlignment="center"
             android:background="@color/scoreBackground"
-            android:text="0"
+            android:text="@string/initNumb_str"
             android:textSize="15sp"
             android:textColor="@color/white"/>
 
@@ -121,12 +121,15 @@
             android:layout_height="40dp"
             android:layout_below="@id/matchAvg_tv"
             android:hint="@string/enter_score"
+            android:textColorHint="@color/buttonStroke"
+            android:textColor="@color/buttonStroke"
             android:inputType="number"
             android:textSize="18sp"
             android:textAlignment="center"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
-            android:background="@color/white" />
+            android:background="@color/white"
+            android:focusable="false"/>
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
