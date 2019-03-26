@@ -10,6 +10,7 @@
     <string name="legs_won_str">Legs won</string>
     <string name="playerName_str">Azazamaz</string>
     <string name="resetYes">Yes</string>
+    <string name="no_text">No</string>
     <string name="reset_score_str">Reset %1$s\'s last score?</string>
     <string name="leg_number">Leg Number</string>
     <string name="set_number">Set Number</string>
@@ -30,7 +31,7 @@
     <string name="live_games">Live games</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_out">Sign out</string>
-    <string name="welcome_user">Welcome %l$s!</string>
+    <string name="welcome_user">Welcome %1$s!</string>
     <string name="applogo">AppLogo</string>
     <string name="match_winner">Match Winner</string>
     <string name="leg_winner">Leg winner</string>
@@ -40,7 +41,7 @@
     <string name="back">Back</string>
     <string name="invalid3darts">This is impossible with 3 darts!</string>
     <string name="not_possible">Not possible!</string>
-    <string name="no180checkout">180 is not checkout!</string>
+    <string name="nocheckout">%d is not checkout!</string>
     <string name="signed_out">Signed out!</string>
     <string name="signed_in">Signed in!</string>
     <string name="sign_in_cancel">Sign in canceled!</string>
@@ -54,4 +55,6 @@
     <string name="leg_win">%1$s is won the leg!</string>
     <string name="leg_avg">Leg avg</string>
     <string name="enter_score">Enter Score</string>
+    <string name="exit_text">Exit</string>
+    <string name="exit_message">You will exit from the application. Are you sure?</string>
 </resources>

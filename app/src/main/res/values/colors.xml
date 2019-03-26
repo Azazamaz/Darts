@@ -5,9 +5,11 @@
     <color name="colorAccent">#006400</color>
 
     <color name="removeRed">#F00</color>
+    <color name="disabledRed">#A00</color>
     <color name="black">#000</color>
     <color name="white">#FFF</color>
     <color name="background">#FFF5EE</color>
+    <color name="header_background">#888</color>
     <color name="scoreBackground">#DC143C</color>
     <color name="buttonStroke">#298716</color>
     <color name="buttonBackground">#FFF5EE</color>

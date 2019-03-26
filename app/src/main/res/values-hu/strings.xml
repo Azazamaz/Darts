@@ -11,6 +11,7 @@
     <string name="legs_won_str">Nyert legek</string>
     <string name="playerName_str">Azazamaz</string>
     <string name="resetYes">Igen</string>
+    <string name="no_text">Nem</string>
     <string name="reset_score_str">Módosítja %1$s előző pontszámát?</string>
     <string name="leg_number">Legek száma</string>
     <string name="set_number">Szettek száma</string>
@@ -31,7 +32,7 @@
     <string name="live_games">Élő mérkőzések</string>
     <string name="sign_in">Bejelentkezés</string>
     <string name="sign_out">Kijelentkezés</string>
-    <string name="welcome_user">Üdvözöllek %l$s!</string>
+    <string name="welcome_user">Üdvözöllek %1$s!</string>
     <string name="applogo">AppLogo</string>
     <string name="match_winner">Mérkőzés győztese</string>
     <string name="leg_winner">Leg győztese</string>
@@ -41,7 +42,7 @@
     <string name="back">Vissza</string>
     <string name="invalid3darts">Érvénytelen pontszám 3 nyíllal!</string>
     <string name="not_possible">Nem lehetséges!</string>
-    <string name="no180checkout">Nem lehet kiszállni 180-ról!</string>
+    <string name="nocheckout">%d nem kiszálló!</string>
     <string name="signed_out">Kijelentkezett!</string>
     <string name="signed_in">Bejelentkezett!</string>
     <string name="sign_in_cancel">Bejelentkezés megszakítva!</string>
@@ -55,4 +56,6 @@
     <string name="leg_win">%1$s nyerte a leget!</string>
     <string name="leg_avg">Leg átlag</string>
     <string name="enter_score">Pontszám</string>
+    <string name="exit_text">Kilépés</string>
+    <string name="exit_message">Ki fog lépni az alkalmazásból! Biztos benne?</string>
 </resources>
