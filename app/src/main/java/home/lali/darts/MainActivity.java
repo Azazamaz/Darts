@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         userWelcomeTv = findViewById(R.id.userWelcome_tv);
 
         if (firebaseAuth.getCurrentUser() != null) {
-            userWelcomeTv.setText("Welcome " + firebaseAuth.getCurrentUser().getDisplayName() + "!");
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            userWelcomeTv.setText(getString(R.string.welcome_user, user.getDisplayName()));
         }
 
         newGameBtn.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NewGameActivity.class);
                 intent.putExtra("ONLINE_GAME", false);
+
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    intent.putExtra("CURRENT_USER", user.getDisplayName());
+                }
 
                 startActivity(intent);
             }
@@ -158,7 +164,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(MainActivity.this, R.string.signed_in, Toast.LENGTH_LONG).show();
-                userWelcomeTv.setText("Welcome " + firebaseAuth.getCurrentUser().getDisplayName() + "!");
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                userWelcomeTv.setText(getString(R.string.welcome_user, user.getDisplayName()));
             } else {
                 Toast.makeText(MainActivity.this, R.string.sign_in_cancel, Toast.LENGTH_LONG).show();
             }
@@ -169,15 +176,20 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(R.drawable.launcher)
-                .setTitle("Exit")
-                .setMessage("You will exit from the application. Are you sure?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.exit_text)
+                .setMessage(R.string.exit_message)
+                .setPositiveButton(R.string.resetYes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton(R.string.no_text, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
                 .show();
     }
 
