@@ -82,7 +82,14 @@ public class LiveMatchActivity extends AppCompatActivity {
                     liveMatchAdapter.notifyDataSetChanged();
                 }
 
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                    String key = dataSnapshot.getKey();
+
+                    int index = keyList.indexOf(key);
+                    matchList.remove(index);
+
+                    liveMatchAdapter.notifyDataSetChanged();
+                }
                 public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
                 public void onCancelled(@NonNull DatabaseError databaseError) {}
             };

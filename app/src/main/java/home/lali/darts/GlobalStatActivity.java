@@ -83,7 +83,14 @@ public class GlobalStatActivity extends AppCompatActivity {
                     matchAdapter.notifyDataSetChanged();
                 }
 
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                    String key = dataSnapshot.getKey();
+
+                    int index = keyList.indexOf(key);
+                    matchList.remove(index);
+
+                    matchAdapter.notifyDataSetChanged();
+                }
                 public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
                 public void onCancelled(@NonNull DatabaseError databaseError) {}
             };
