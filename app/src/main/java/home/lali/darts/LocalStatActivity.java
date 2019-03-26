@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +15,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import home.lali.darts.adapter.LocalStatAdapter;
+import home.lali.darts.adapter.RecyclerItemDecorator;
 import home.lali.darts.database.DatabaseAccess;
+import home.lali.darts.model.OnlineMatches;
 
 public class LocalStatActivity extends AppCompatActivity {
 
-    LinearLayout singleStat;
-    LayoutInflater layoutInflater;
+    private RecyclerView localMainList;
+
+    private List<OnlineMatches> localMatchList;
+    private LocalStatAdapter localAdapter;
 
     private DatabaseAccess database;
 
@@ -30,21 +38,19 @@ public class LocalStatActivity extends AppCompatActivity {
 
         database = DatabaseAccess.getInstance(LocalStatActivity.this);
 
-        singleStat = findViewById(R.id.single_stat_layout);
-        layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        localMatchList = new ArrayList<>();
+        localAdapter = new LocalStatAdapter(localMatchList);
 
         setLayout();
+
+        localMainList = findViewById(R.id.localMainList);
+        localMainList.setHasFixedSize(true);
+        localMainList.addItemDecoration(new RecyclerItemDecorator(this));
+        localMainList.setLayoutManager(new LinearLayoutManager(this));
+        localMainList.setAdapter(localAdapter);
     }
 
     private void setLayout() {
-        ArrayList<String> p1Name;
-        ArrayList<String> p1Leg;
-        ArrayList<String> p1Avg;
-        ArrayList<String> p2Name;
-        ArrayList<String> p2Leg;
-        ArrayList<String> p2Avg;
-        TextView p1N, p1L, p1A, p2N, p2L, p2A;
-
         try {
             database.open();
 
@@ -55,44 +61,16 @@ public class LocalStatActivity extends AppCompatActivity {
                 return;
             }
 
-            p1Name = new ArrayList<>();
-            p1Leg = new ArrayList<>();
-            p1Avg = new ArrayList<>();
-            p2Name = new ArrayList<>();
-            p2Leg = new ArrayList<>();
-            p2Avg = new ArrayList<>();
-
             while (res.moveToNext()) {
-                p1Name.add(res.getString(1));
-                p1Leg.add(res.getString(2));
-                p1Avg.add(res.getString(3));
-                p2Name.add(res.getString(4));
-                p2Leg.add(res.getString(5));
-                p2Avg.add(res.getString(6));
+                String player1 = res.getString(1);
+                int p1Leg = res.getInt(2);
+                double p1Avg = res.getDouble(3);
+                String player2 = res.getString(4);
+                int p2Leg = res.getInt(5);
+                double p2Avg = res.getDouble(6);
+                localMatchList.add(new OnlineMatches(player1, p1Leg, p1Avg, player2, p2Leg, p2Avg, false));
             }
 
-            for (int i = 0; i < p1Name.size(); i++) {
-                View localStatView = layoutInflater.inflate(R.layout.localstatview_layout, null, false);
-                p1N = localStatView.findViewById(R.id.statP1Name_tv);
-                p1L = localStatView.findViewById(R.id.statP1Leg_tv);
-                p1A = localStatView.findViewById(R.id.statP1Avg_tv);
-                p2N = localStatView.findViewById(R.id.statP2Name_tv);
-                p2L = localStatView.findViewById(R.id.statP2Leg_tv);
-                p2A = localStatView.findViewById(R.id.statP2Avg_tv);
-
-                p1N.setText(p1Name.get(i));
-                p1L.setText(p1Leg.get(i));
-                p1A.setText(p1Avg.get(i));
-                p2N.setText(p2Name.get(i));
-                p2L.setText(p2Leg.get(i));
-                p2A.setText(p2Avg.get(i));
-
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(0, 50, 0, 0);
-
-                singleStat.addView(localStatView, layoutParams);
-            }
         } catch (Exception e) {
             Log.e("READ LOCAL", e.getMessage());
         } finally {
