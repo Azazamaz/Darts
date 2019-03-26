@@ -46,6 +46,7 @@ public class NewGameActivity extends AppCompatActivity {
     private boolean onlineGame;
 
     private DatabaseReference databaseRef;
+    private FirebaseUser user;
 
     private String currentKey;
 
@@ -58,7 +59,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         Button addNewPlayer;
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         Bundle bundle = getIntent().getExtras();
         onlineGame = bundle.getBoolean("ONLINE_GAME");
@@ -115,7 +116,6 @@ public class NewGameActivity extends AppCompatActivity {
         startOnlineGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Online játék beállítások
                 if (isOnline()) {
                     if (playersList.size() == 2) {
                         try {
@@ -149,6 +149,42 @@ public class NewGameActivity extends AppCompatActivity {
         startGame.setEnabled(false);
         startOnlineGame.setEnabled(false);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (user != null && playersList.size() == 0) {
+            playersList.add(user.getDisplayName());
+            scrollableLayout = findViewById(R.id.scrollNamesLayout);
+            TextView player_tv = new TextView(getApplicationContext());
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
+                    (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+            layoutParams.setMargins(0, 10, 0, 10);
+
+            player_tv.setLayoutParams(layoutParams);
+            player_tv.setText(user.getDisplayName());
+            player_tv.setTextSize(20);
+            player_tv.setTextColor(getResources().getColor(R.color.black));
+            player_tv.setGravity(Gravity.CENTER_HORIZONTAL);
+
+            scrollableLayout.addView(player_tv);
+        }
+        startGame.setEnabled(false);
+        startOnlineGame.setEnabled(false);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (scrollableLayout != null) {
+            scrollableLayout.removeAllViews();
+        }
+        playersList.clear();
     }
 
     /**
@@ -266,7 +302,6 @@ public class NewGameActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (isOnline()) {
-                            //TODO: Online beállítások
                             try {
                                 if (playersList.size() == 2) {
                                     OnlineMatches onlineMatch = new OnlineMatches(playersList.get(0), 0,
