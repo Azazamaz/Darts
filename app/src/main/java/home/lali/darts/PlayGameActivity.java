@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -160,6 +161,9 @@ public class PlayGameActivity extends AppCompatActivity {
         player2 = new DartsPlayer();
 
         player1.setLegStart(true);
+
+        enterScore1.setHintTextColor(getResources().getColor(R.color.buttonStroke));
+        enterScore2.setHintTextColor(getResources().getColor(R.color.header_background));
     }
 
     /**
@@ -346,7 +350,7 @@ public class PlayGameActivity extends AppCompatActivity {
         }
     };
 
-    private void getPlayerCheckout(DartsPlayer player, TextView score, TextView checkout) {
+    private void getPlayerCheckout(@NonNull DartsPlayer player, TextView score, TextView checkout) {
         if (player.getScore() < 180) {
             databaseAccess.open();
             String checkO = databaseAccess.getCheckout(String.valueOf(score.getText()));
@@ -366,8 +370,9 @@ public class PlayGameActivity extends AppCompatActivity {
 
                 if (player1.getScore() - score_helper < 0) {
                     Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
-                } else if (player1.getScore() - score_helper == 0 && player1.getScore() == 180) {
-                    Toast.makeText(PlayGameActivity.this, R.string.no180checkout, Toast.LENGTH_LONG).show();
+                } else if (player1.getScore() - score_helper == 0 && notCheckOut(player1.getScore())) {
+                    Toast.makeText(PlayGameActivity.this,
+                                        getString(R.string.nocheckout, player1.getScore()), Toast.LENGTH_LONG).show();
                 } else {
                     matchRounds1++;
                     legRounds1++;
@@ -391,6 +396,9 @@ public class PlayGameActivity extends AppCompatActivity {
 
                     enterScore1.setText("");
                     enterScore2.requestFocus();
+
+                    enterScore1.setHintTextColor(getResources().getColor(R.color.background));
+                    enterScore2.setHintTextColor(getResources().getColor(R.color.buttonStroke));
                 }
             }
 
@@ -438,8 +446,9 @@ public class PlayGameActivity extends AppCompatActivity {
             } else {
                 if (player2.getScore() - score_helper < 0) {
                     Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
-                } else if (player2.getScore() - score_helper == 0 && player2.getScore() == 180) {
-                    Toast.makeText(PlayGameActivity.this, R.string.no180checkout, Toast.LENGTH_LONG).show();
+                } else if (player2.getScore() - score_helper == 0 && notCheckOut(player2.getScore())) {
+                    Toast.makeText(PlayGameActivity.this,
+                                        getString(R.string.nocheckout, player2.getScore()), Toast.LENGTH_LONG).show();
                 } else {
                     matchRounds2++;
                     legRounds2++;
@@ -463,6 +472,9 @@ public class PlayGameActivity extends AppCompatActivity {
 
                     enterScore2.setText("");
                     enterScore1.requestFocus();
+
+                    enterScore2.setHintTextColor(getResources().getColor(R.color.background));
+                    enterScore1.setHintTextColor(getResources().getColor(R.color.buttonStroke));
                 }
             }
 
@@ -512,8 +524,9 @@ public class PlayGameActivity extends AppCompatActivity {
 
                     if (player1.getScore() - score_helper < 0) {
                         Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
-                    } else if (player1.getScore() - score_helper == 0 && player1.getScore() == 180) {
-                        Toast.makeText(PlayGameActivity.this, R.string.no180checkout, Toast.LENGTH_LONG).show();
+                    } else if (player1.getScore() - score_helper == 0 && notCheckOut(player1.getScore())) {
+                        Toast.makeText(PlayGameActivity.this,
+                                        getString(R.string.nocheckout, player1.getScore()), Toast.LENGTH_LONG).show();
                     } else {
                         matchRounds1++;
                         legRounds1++;
@@ -537,6 +550,9 @@ public class PlayGameActivity extends AppCompatActivity {
 
                         enterScore1.setText("");
                         enterScore2.requestFocus();
+
+                        enterScore1.setHintTextColor(getResources().getColor(R.color.background));
+                        enterScore2.setHintTextColor(getResources().getColor(R.color.buttonStroke));
 
                         databaseRef.child(currentKey).child("score1").setValue(player1.getScore());
                         double p1Avg = numberRound(player1.getMatchAvg(), 2);
@@ -598,8 +614,9 @@ public class PlayGameActivity extends AppCompatActivity {
                 } else {
                     if (player2.getScore() - score_helper < 0) {
                         Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
-                    } else if (player2.getScore() - score_helper == 0 && player2.getScore() == 180) {
-                        Toast.makeText(PlayGameActivity.this, R.string.no180checkout, Toast.LENGTH_LONG).show();
+                    } else if (player2.getScore() - score_helper == 0 && notCheckOut(player2.getScore())) {
+                        Toast.makeText(PlayGameActivity.this,
+                                        getString(R.string.nocheckout, player2.getScore()), Toast.LENGTH_LONG).show();
                     } else {
                         matchRounds2++;
                         legRounds2++;
@@ -623,6 +640,9 @@ public class PlayGameActivity extends AppCompatActivity {
 
                         enterScore2.setText("");
                         enterScore1.requestFocus();
+
+                        enterScore2.setHintTextColor(getResources().getColor(R.color.background));
+                        enterScore1.setHintTextColor(getResources().getColor(R.color.buttonStroke));
 
                         databaseRef.child(currentKey).child("score2").setValue(player2.getScore());
                         double p2Avg = numberRound(player2.getMatchAvg(), 2);
@@ -673,22 +693,36 @@ public class PlayGameActivity extends AppCompatActivity {
         }
     }
 
-    private void setLegStartPlayer(DartsPlayer p1, DartsPlayer p2) {
+    private void setLegStartPlayer(@NonNull DartsPlayer p1, @NonNull DartsPlayer p2) {
         if (p1.getLegStart()) {
             p1.setLegStart(false);
             p2.setLegStart(true);
+            enterScore1.setHintTextColor(getResources().getColor(R.color.background));
+            enterScore2.setHintTextColor(getResources().getColor(R.color.buttonStroke));
             if ((okBtnPress % 2) == 0) {
                 okBtnPress--;
             }
         } else if (p2.getLegStart()) {
             p2.setLegStart(false);
             p1.setLegStart(true);
+            enterScore1.setHintTextColor(getResources().getColor(R.color.buttonStroke));
+            enterScore2.setHintTextColor(getResources().getColor(R.color.background));
             if ((okBtnPress % 2) == 1) {
                 okBtnPress--;
             }
         }
     }
 
+    private boolean notCheckOut(int n) {
+        int[] nco = getResources().getIntArray(R.array.noCheckOuts);
+
+        for (int i = 0; i < nco.length; i++) {
+            if (n == nco[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     View.OnClickListener resetScore = new View.OnClickListener() {
         @Override
@@ -763,7 +797,7 @@ public class PlayGameActivity extends AppCompatActivity {
      *
      * @return AlertDialog
      */
-    private AlertDialog matchWinnerDialog(DartsPlayer player) {
+    private AlertDialog matchWinnerDialog(@NonNull DartsPlayer player) {
         AlertDialog.Builder builder = new AlertDialog.Builder(PlayGameActivity.this);
         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -783,7 +817,7 @@ public class PlayGameActivity extends AppCompatActivity {
      *
      * @return AlertDialog
      */
-    private AlertDialog legWinnerDialog(DartsPlayer player) {
+    private AlertDialog legWinnerDialog(@NonNull DartsPlayer player) {
         AlertDialog.Builder builder = new AlertDialog.Builder(PlayGameActivity.this);
         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             @Override
