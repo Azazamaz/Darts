@@ -88,6 +88,7 @@ public class GlobalStatActivity extends AppCompatActivity {
 
                     int index = keyList.indexOf(key);
                     matchList.remove(index);
+                    keyList.remove(index);
 
                     matchAdapter.notifyDataSetChanged();
                 }

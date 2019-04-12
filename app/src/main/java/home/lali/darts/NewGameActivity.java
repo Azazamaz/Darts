@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import home.lali.darts.model.DartsPlayer;
 import home.lali.darts.model.OnlineMatches;
 
 
@@ -119,10 +120,16 @@ public class NewGameActivity extends AppCompatActivity {
                 if (isOnline()) {
                     if (playersList.size() == 2) {
                         try {
-                            OnlineMatches onlineMatch = new OnlineMatches(playersList.get(0), 0,
+                            /*OnlineMatches onlineMatch = new OnlineMatches(playersList.get(0), 0,
                                     Integer.valueOf(gameModes.getSelectedItem().toString()),
                                     playersList.get(1), 0,
-                                    Integer.valueOf(gameModes.getSelectedItem().toString()), true);
+                                    Integer.valueOf(gameModes.getSelectedItem().toString()), true);*/
+
+                            OnlineMatches onlineMatch = new OnlineMatches(
+                                    new DartsPlayer(playersList.get(0), Integer.valueOf(gameModes.getSelectedItem().toString())),
+                                    new DartsPlayer(playersList.get(1), Integer.valueOf(gameModes.getSelectedItem().toString())),
+                                    true
+                            );
 
                             currentKey = databaseRef.push().getKey();
                             databaseRef.child(currentKey).setValue(onlineMatch);
@@ -304,10 +311,12 @@ public class NewGameActivity extends AppCompatActivity {
                         if (isOnline()) {
                             try {
                                 if (playersList.size() == 2) {
-                                    OnlineMatches onlineMatch = new OnlineMatches(playersList.get(0), 0,
-                                            Integer.valueOf(gameModes.getSelectedItem().toString()),
-                                            playersList.get(1), 0,
-                                            Integer.valueOf(gameModes.getSelectedItem().toString()), true);
+
+                                    OnlineMatches onlineMatch = new OnlineMatches(
+                                            new DartsPlayer(playersList.get(0), Integer.valueOf(gameModes.getSelectedItem().toString())),
+                                            new DartsPlayer(playersList.get(1), Integer.valueOf(gameModes.getSelectedItem().toString())),
+                                            true
+                                    );
 
                                     currentKey = databaseRef.push().getKey();
                                     databaseRef.child(currentKey).setValue(onlineMatch);

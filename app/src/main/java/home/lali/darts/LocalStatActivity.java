@@ -20,6 +20,7 @@ import java.util.List;
 import home.lali.darts.adapter.LocalStatAdapter;
 import home.lali.darts.adapter.RecyclerItemDecorator;
 import home.lali.darts.database.DatabaseAccess;
+import home.lali.darts.model.DartsPlayer;
 import home.lali.darts.model.OnlineMatches;
 
 public class LocalStatActivity extends AppCompatActivity {
@@ -68,7 +69,9 @@ public class LocalStatActivity extends AppCompatActivity {
                 String player2 = res.getString(4);
                 int p2Leg = res.getInt(5);
                 double p2Avg = res.getDouble(6);
-                localMatchList.add(new OnlineMatches(player1, p1Leg, p1Avg, player2, p2Leg, p2Avg, false));
+                localMatchList.add(new OnlineMatches(false,
+                        new DartsPlayer(player1, p1Leg, p1Avg),
+                        new DartsPlayer(player2, p2Leg, p2Avg)));
             }
 
         } catch (Exception e) {
