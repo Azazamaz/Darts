@@ -13,23 +13,25 @@ public class OnlineMatches {
 
     public OnlineMatches() {}
 
-    public OnlineMatches(String name1, int legW_1, double avg_1, String name2, int legW_2, double avg_2, boolean live) {
-        this.name1 = name1;
-        this.legW_1 = legW_1;
-        this.avg_1 = avg_1;
-        this.name2 = name2;
-        this.legW_2 = legW_2;
-        this.avg_2 = avg_2;
+    /** Constructor for save local stat */
+    public OnlineMatches(boolean live, DartsPlayer p1, DartsPlayer p2) {
         this.live = live;
+        this.name1 = p1.getPlayerName();
+        this.legW_1 = p1.getLegW();
+        this.avg_1 = p1.getMatchAvg();
+        this.name2 = p2.getPlayerName();
+        this.legW_2 = p2.getLegW();
+        this.avg_2 = p2.getMatchAvg();
     }
 
-    public OnlineMatches(String name1, int legW_1, int score1, String name2, int legW_2, int score2, boolean live) {
-        this.name1 = name1;
-        this.legW_1 = legW_1;
-        this.score1 = score1;
-        this.name2 = name2;
-        this.legW_2 = legW_2;
-        this.score2 = score2;
+    /** Constructor for StartOnlineMatch */
+    public OnlineMatches(DartsPlayer p1, DartsPlayer p2, boolean live) {
+        this.name1 = p1.getPlayerName();
+        this.legW_1 = p1.getLegW();
+        this.score1 = p1.getScore();
+        this.name2 = p2.getPlayerName();
+        this.legW_2 = p2.getLegW();
+        this.score2 = p2.getScore();
         this.live = live;
     }
 

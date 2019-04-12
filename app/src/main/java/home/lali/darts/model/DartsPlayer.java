@@ -19,6 +19,18 @@ public class DartsPlayer {
         legStart = false;
     }
 
+    public DartsPlayer(String name, int score) {
+        this.playerName = name;
+        this.score = score;
+        this.legW = 0;
+    }
+
+    public DartsPlayer(String name, int legW, double matchAvg) {
+        this.playerName = name;
+        this.legW = legW;
+        this.matchAvg = matchAvg;
+    }
+
     public String getPlayerName(){
         return playerName;
     }
