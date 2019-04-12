@@ -98,6 +98,12 @@ public class PlayGameActivity extends AppCompatActivity {
     }
 
     @Override
+    protected  void onResume() {
+        super.onResume();
+        okBtnPress = 0;
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         if (onlinePlay) {
