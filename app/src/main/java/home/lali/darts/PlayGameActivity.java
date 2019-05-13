@@ -424,7 +424,6 @@ public class PlayGameActivity extends AppCompatActivity {
                 setLegStartPlayer(player1, player2);
             }
 
-
             if (player1.getLegW() == (legNumber / 2 + 1)) {
                 matchWinnerDialog(player1).show();
 

@@ -83,7 +83,7 @@ public class LocalStatActivity extends AppCompatActivity {
 
     private AlertDialog emptyStat() {
         AlertDialog.Builder builder = new AlertDialog.Builder(LocalStatActivity.this);
-        builder.setNeutralButton("Back", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(R.string.back, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 onBackPressed();
