@@ -1,10 +1,15 @@
 package home.lali.darts;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 
@@ -120,10 +126,6 @@ public class NewGameActivity extends AppCompatActivity {
                 if (isOnline()) {
                     if (playersList.size() == 2) {
                         try {
-                            /*OnlineMatches onlineMatch = new OnlineMatches(playersList.get(0), 0,
-                                    Integer.valueOf(gameModes.getSelectedItem().toString()),
-                                    playersList.get(1), 0,
-                                    Integer.valueOf(gameModes.getSelectedItem().toString()), true);*/
 
                             OnlineMatches onlineMatch = new OnlineMatches(
                                     new DartsPlayer(playersList.get(0), Integer.valueOf(gameModes.getSelectedItem().toString())),
@@ -135,6 +137,11 @@ public class NewGameActivity extends AppCompatActivity {
                             databaseRef.child(currentKey).setValue(onlineMatch);
                             Log.i("SuccessUpload", "Match uploaded successfully!");
 
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Notifications");
+                            String notiKey = ref.push().getKey();
+                            ref.child(notiKey).setValue(FirebaseInstanceId.getInstance().getToken());
+                            ref.child("token").setValue(FirebaseInstanceId.getInstance().getToken());
+                            Log.i("TokenUpload", "Token uploaded successfully!");
 
                             Intent intent = new Intent(NewGameActivity.this, PlayGameActivity.class);
                             intent.putExtra("ONLINE_PLAY", true);
@@ -321,6 +328,12 @@ public class NewGameActivity extends AppCompatActivity {
                                     currentKey = databaseRef.push().getKey();
                                     databaseRef.child(currentKey).setValue(onlineMatch);
                                     Log.i("trySuccessUpload", "Successful try again upload!");
+
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Notifications");
+                                    String notiKey = ref.push().getKey();
+                                    ref.child(notiKey).setValue(FirebaseInstanceId.getInstance().getToken());
+                                    ref.child("token").setValue(FirebaseInstanceId.getInstance().getToken());
+                                    Log.i("TokenUpload", "Token uploaded successfully!");
 
                                     Intent intent = new Intent(NewGameActivity.this, PlayGameActivity.class);
                                     intent.putExtra("ONLINE_PLAY", true);
