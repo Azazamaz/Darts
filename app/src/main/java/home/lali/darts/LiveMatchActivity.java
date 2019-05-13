@@ -1,7 +1,9 @@
 package home.lali.darts;
 
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,6 +51,12 @@ public class LiveMatchActivity extends AppCompatActivity {
 		scoreMainList.addItemDecoration(new RecyclerItemDecorator(this));
         scoreMainList.setLayoutManager(new LinearLayoutManager(this));
         scoreMainList.setAdapter(liveMatchAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        attachDatabaseReadListener();
     }
 
     @Override
