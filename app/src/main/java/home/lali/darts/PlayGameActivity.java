@@ -767,7 +767,7 @@ public class PlayGameActivity extends AppCompatActivity {
     private AlertDialog noInternetPlayer1() {
         return noInternet(new Callable<Void>() {
             @Override
-            public Void call() throws Exception {
+            public Void call() {
                 onlinePlayer1Round();
                 return null;
             }
@@ -777,7 +777,7 @@ public class PlayGameActivity extends AppCompatActivity {
     private AlertDialog noInternetPlayer2() {
         return noInternet(new Callable<Void>() {
             @Override
-            public Void call() throws Exception {
+            public Void call() {
                 onlinePlayer2Round();
                 return null;
             }
