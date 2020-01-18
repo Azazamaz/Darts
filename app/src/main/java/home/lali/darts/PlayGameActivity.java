@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 import home.lali.darts.database.DatabaseAccess;
 import home.lali.darts.model.DartsPlayer;
@@ -98,7 +99,7 @@ public class PlayGameActivity extends AppCompatActivity {
     }
 
     @Override
-    protected  void onResume() {
+    protected void onResume() {
         super.onResume();
         okBtnPress = 0;
     }
@@ -298,7 +299,7 @@ public class PlayGameActivity extends AppCompatActivity {
                     Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
                 } else if (player1.getScore() - score_helper == 0 && notCheckOut(player1.getScore())) {
                     Toast.makeText(PlayGameActivity.this,
-                                        getString(R.string.nocheckout, player1.getScore()), Toast.LENGTH_LONG).show();
+                            getString(R.string.nocheckout, player1.getScore()), Toast.LENGTH_LONG).show();
                 } else {
                     matchRounds1++;
                     legRounds1++;
@@ -373,7 +374,7 @@ public class PlayGameActivity extends AppCompatActivity {
                     Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
                 } else if (player2.getScore() - score_helper == 0 && notCheckOut(player2.getScore())) {
                     Toast.makeText(PlayGameActivity.this,
-                                        getString(R.string.nocheckout, player2.getScore()), Toast.LENGTH_LONG).show();
+                            getString(R.string.nocheckout, player2.getScore()), Toast.LENGTH_LONG).show();
                 } else {
                     matchRounds2++;
                     legRounds2++;
@@ -451,7 +452,7 @@ public class PlayGameActivity extends AppCompatActivity {
                         Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
                     } else if (player1.getScore() - score_helper == 0 && notCheckOut(player1.getScore())) {
                         Toast.makeText(PlayGameActivity.this,
-                                        getString(R.string.nocheckout, player1.getScore()), Toast.LENGTH_LONG).show();
+                                getString(R.string.nocheckout, player1.getScore()), Toast.LENGTH_LONG).show();
                     } else {
                         matchRounds1++;
                         legRounds1++;
@@ -541,7 +542,7 @@ public class PlayGameActivity extends AppCompatActivity {
                         Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
                     } else if (player2.getScore() - score_helper == 0 && notCheckOut(player2.getScore())) {
                         Toast.makeText(PlayGameActivity.this,
-                                        getString(R.string.nocheckout, player2.getScore()), Toast.LENGTH_LONG).show();
+                                getString(R.string.nocheckout, player2.getScore()), Toast.LENGTH_LONG).show();
                     } else {
                         matchRounds2++;
                         legRounds2++;
@@ -764,28 +765,26 @@ public class PlayGameActivity extends AppCompatActivity {
     }
 
     private AlertDialog noInternetPlayer1() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(PlayGameActivity.this);
-
-        builder.setIcon(R.mipmap.offline_icon)
-                .setTitle(R.string.no_internet)
-                .setMessage(R.string.lost_internet_connection)
-                .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onlinePlayer1Round();
-                    }
-                })
-                .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-        return builder.create();
+        return noInternet(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                onlinePlayer1Round();
+                return null;
+            }
+        });
     }
 
     private AlertDialog noInternetPlayer2() {
+        return noInternet(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                onlinePlayer2Round();
+                return null;
+            }
+        });
+    }
+
+    private AlertDialog noInternet(final Callable<Void> playerRound) {
         AlertDialog.Builder builder = new AlertDialog.Builder(PlayGameActivity.this);
 
         builder.setIcon(R.mipmap.offline_icon)
@@ -794,7 +793,11 @@ public class PlayGameActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.try_again, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        onlinePlayer2Round();
+                        try {
+                            playerRound.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 })
                 .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
