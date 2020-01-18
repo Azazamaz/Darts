@@ -208,123 +208,25 @@ public class PlayGameActivity extends AppCompatActivity {
         }
     }
 
+
     /**
      * Gombok lenyomása után beírjuk a számot a ScoreET-be
      */
     private void updateEnterScore() {
-        num1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((okBtnPress % 2) == 0) {
-                    enterScore1.append("1");
-                } else if ((okBtnPress % 2) == 1) {
-                    enterScore2.append("1");
-                }
-            }
-        });
-
-        num2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((okBtnPress % 2) == 0) {
-                    enterScore1.append("2");
-                } else if ((okBtnPress % 2) == 1) {
-                    enterScore2.append("2");
-                }
-            }
-        });
-
-        num3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((okBtnPress % 2) == 0) {
-                    enterScore1.append("3");
-                } else if ((okBtnPress % 2) == 1) {
-                    enterScore2.append("3");
-                }
-            }
-        });
-
-        num4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((okBtnPress % 2) == 0) {
-                    enterScore1.append("4");
-                } else if ((okBtnPress % 2) == 1) {
-                    enterScore2.append("4");
-                }
-            }
-        });
-
-        num5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((okBtnPress % 2) == 0) {
-                    enterScore1.append("5");
-                } else if ((okBtnPress % 2) == 1) {
-                    enterScore2.append("5");
-                }
-            }
-        });
-
-        num6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((okBtnPress % 2) == 0) {
-                    enterScore1.append("6");
-                } else if ((okBtnPress % 2) == 1) {
-                    enterScore2.append("6");
-                }
-            }
-        });
-
-        num7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((okBtnPress % 2) == 0) {
-                    enterScore1.append("7");
-                } else if ((okBtnPress % 2) == 1) {
-                    enterScore2.append("7");
-                }
-            }
-        });
-
-        num8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((okBtnPress % 2) == 0) {
-                    enterScore1.append("8");
-                } else if ((okBtnPress % 2) == 1) {
-                    enterScore2.append("8");
-                }
-            }
-        });
-
-        num9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((okBtnPress % 2) == 0) {
-                    enterScore1.append("9");
-                } else if ((okBtnPress % 2) == 1) {
-                    enterScore2.append("9");
-                }
-            }
-        });
-
-        num0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if ((okBtnPress % 2) == 0) {
-                    enterScore1.append("0");
-                } else if ((okBtnPress % 2) == 1) {
-                    enterScore2.append("0");
-                }
-            }
-        });
+        appendNumberToEnterScore(num1, "1");
+        appendNumberToEnterScore(num2, "2");
+        appendNumberToEnterScore(num3, "3");
+        appendNumberToEnterScore(num4, "4");
+        appendNumberToEnterScore(num5, "5");
+        appendNumberToEnterScore(num6, "6");
+        appendNumberToEnterScore(num7, "7");
+        appendNumberToEnterScore(num8, "8");
+        appendNumberToEnterScore(num9, "9");
+        appendNumberToEnterScore(num0, "0");
 
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 if ((okBtnPress % 2) == 0) {
                     enterScore1.setText("");
                 } else if ((okBtnPress % 2) == 1) {
@@ -333,6 +235,24 @@ public class PlayGameActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void appendNumberToEnterScore(Button button, final String number) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appendNumberToEnterScore(number);
+            }
+        });
+    }
+
+    private void appendNumberToEnterScore(String number) {
+        if ((okBtnPress % 2) == 0) {
+            enterScore1.append(number);
+        } else if ((okBtnPress % 2) == 1) {
+            enterScore2.append(number);
+        }
+    }
+
 
     /**
      * Elvégezzük a scoreboard frissítését.
