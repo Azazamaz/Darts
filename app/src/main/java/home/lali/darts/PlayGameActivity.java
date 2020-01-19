@@ -316,11 +316,8 @@ public class PlayGameActivity extends AppCompatActivity {
 
                     updateAvgViews(player1, legAvg[0], matchAvg[0]);
 
-                    enterScore[0].setText("");
-                    enterScore[1].requestFocus();
-
-                    enterScore[0].setHintTextColor(getResources().getColor(R.color.background));
-                    enterScore[1].setHintTextColor(getResources().getColor(R.color.buttonStroke));
+                    setEnterScoreFocus(enterScore[0], enterScore[1]);
+                    setEnterScoreHintTextColor(enterScore[0], enterScore[1]);
                 }
             }
 
@@ -390,11 +387,8 @@ public class PlayGameActivity extends AppCompatActivity {
 
                     updateAvgViews(player2, legAvg[1], matchAvg[1]);
 
-                    enterScore[1].setText("");
-                    enterScore[0].requestFocus();
-
-                    enterScore[1].setHintTextColor(getResources().getColor(R.color.background));
-                    enterScore[0].setHintTextColor(getResources().getColor(R.color.buttonStroke));
+                    setEnterScoreFocus(enterScore[1], enterScore[0]);
+                    setEnterScoreHintTextColor(enterScore[1], enterScore[0]);
                 }
             }
 
@@ -467,11 +461,8 @@ public class PlayGameActivity extends AppCompatActivity {
 
                         updateAvgViews(player1, legAvg[0], matchAvg[0]);
 
-                        enterScore[0].setText("");
-                        enterScore[1].requestFocus();
-
-                        enterScore[0].setHintTextColor(getResources().getColor(R.color.background));
-                        enterScore[1].setHintTextColor(getResources().getColor(R.color.buttonStroke));
+                        setEnterScoreFocus(enterScore[0], enterScore[1]);
+                        setEnterScoreHintTextColor(enterScore[0], enterScore[1]);
 
                         databaseRef.child(currentKey).child("score1").setValue(player1.getScore());
                         double p1Avg = numberRound(player1.getMatchAvg(), 2);
@@ -556,11 +547,8 @@ public class PlayGameActivity extends AppCompatActivity {
 
                         updateAvgViews(player2, legAvg[1], matchAvg[1]);
 
-                        enterScore[1].setText("");
-                        enterScore[0].requestFocus();
-
-                        enterScore[1].setHintTextColor(getResources().getColor(R.color.background));
-                        enterScore[0].setHintTextColor(getResources().getColor(R.color.buttonStroke));
+                        setEnterScoreFocus(enterScore[1], enterScore[0]);
+                        setEnterScoreHintTextColor(enterScore[1], enterScore[0]);
 
                         databaseRef.child(currentKey).child("score2").setValue(player2.getScore());
                         double p2Avg = numberRound(player2.getMatchAvg(), 2);
@@ -616,12 +604,14 @@ public class PlayGameActivity extends AppCompatActivity {
         matchAvg.setText(String.valueOf(player.getMatchAvg()));
     }
 
-    private void setPlayerAvarages(DartsPlayer player, double legAvg, double matchAvg, int helper, int legRounds, int matchRounds) {
-        legAvg += helper;
-        matchAvg += helper;
+    private void setEnterScoreHintTextColor(EditText backgroundColorView, EditText buttonStrokeView) {
+        backgroundColorView.setHintTextColor(getResources().getColor(R.color.background));
+        buttonStrokeView.setHintTextColor(getResources().getColor(R.color.buttonStroke));
+    }
 
-        player.setLegAvg(legAvg / legRounds);
-        player.setMatchAvg(matchAvg / matchRounds);
+    private void setEnterScoreFocus(EditText emptyText, EditText focusRequest) {
+        emptyText.setText("");
+        focusRequest.requestFocus();
     }
 
     private void setLegStartPlayer(@NonNull DartsPlayer p1, @NonNull DartsPlayer p2) {
