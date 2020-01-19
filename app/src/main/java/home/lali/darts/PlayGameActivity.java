@@ -31,14 +31,14 @@ import home.lali.darts.model.DartsPlayer;
 
 public class PlayGameActivity extends AppCompatActivity {
 
-    private TextView playerName1, playerName2;
-    private TextView score1, score2;
-    private TextView legsWon1, legsWon2;
-    private TextView legAvg1, legAvg2;
-    private TextView matchAvg1, matchAvg2;
-    private TextView checkout1, checkout2;
+    private TextView[] playerName = new TextView[2];
+    private TextView[] score = new TextView[2];
+    private TextView[] legsWon = new TextView[2];
+    private TextView[] legAvg = new TextView[2];
+    private TextView[] matchAvg = new TextView[2];
+    private TextView[] checkout = new TextView[2];
 
-    private EditText enterScore1, enterScore2;
+    private EditText[] enterScore = new EditText[2];
 
     private Button num1;
     private Button num2;
@@ -89,7 +89,7 @@ public class PlayGameActivity extends AppCompatActivity {
         getInformation();
         updateEnterScore();
 
-        enterScore1.requestFocus();
+        enterScore[0].requestFocus();
 
         ok_btn.setOnClickListener(okBtnFunction);
         reset.setOnClickListener(resetScore);
@@ -131,21 +131,21 @@ public class PlayGameActivity extends AppCompatActivity {
         scoreLayout.addView(scoreboardLayout);
         scoreLayout.addView(scoreboardLayout2);
 
-        playerName1 = scoreboardLayout.findViewById(R.id.playerName_tv);
-        score1 = scoreboardLayout.findViewById(R.id.score_tv);
-        enterScore1 = scoreboardLayout.findViewById(R.id.enterScore_et);
-        legsWon1 = scoreboardLayout.findViewById(R.id.legsWon_tv);
-        legAvg1 = scoreboardLayout.findViewById(R.id.avgLeg_tv);
-        matchAvg1 = scoreboardLayout.findViewById(R.id.avgMatch_tv);
-        checkout1 = scoreboardLayout.findViewById(R.id.checkout_tv);
+        playerName[0] = scoreboardLayout.findViewById(R.id.playerName_tv);
+        score[0] = scoreboardLayout.findViewById(R.id.score_tv);
+        enterScore[0] = scoreboardLayout.findViewById(R.id.enterScore_et);
+        legsWon[0] = scoreboardLayout.findViewById(R.id.legsWon_tv);
+        legAvg[0] = scoreboardLayout.findViewById(R.id.avgLeg_tv);
+        matchAvg[0] = scoreboardLayout.findViewById(R.id.avgMatch_tv);
+        checkout[0] = scoreboardLayout.findViewById(R.id.checkout_tv);
 
-        playerName2 = scoreboardLayout2.findViewById(R.id.playerName_tv);
-        score2 = scoreboardLayout2.findViewById(R.id.score_tv);
-        enterScore2 = scoreboardLayout2.findViewById(R.id.enterScore_et);
-        legsWon2 = scoreboardLayout2.findViewById(R.id.legsWon_tv);
-        legAvg2 = scoreboardLayout2.findViewById(R.id.avgLeg_tv);
-        matchAvg2 = scoreboardLayout2.findViewById(R.id.avgMatch_tv);
-        checkout2 = scoreboardLayout2.findViewById(R.id.checkout_tv);
+        playerName[1] = scoreboardLayout2.findViewById(R.id.playerName_tv);
+        score[1] = scoreboardLayout2.findViewById(R.id.score_tv);
+        enterScore[1] = scoreboardLayout2.findViewById(R.id.enterScore_et);
+        legsWon[1] = scoreboardLayout2.findViewById(R.id.legsWon_tv);
+        legAvg[1] = scoreboardLayout2.findViewById(R.id.avgLeg_tv);
+        matchAvg[1] = scoreboardLayout2.findViewById(R.id.avgMatch_tv);
+        checkout[1] = scoreboardLayout2.findViewById(R.id.checkout_tv);
 
         num1 = findViewById(R.id.number1_btn);
         num2 = findViewById(R.id.number2_btn);
@@ -166,8 +166,8 @@ public class PlayGameActivity extends AppCompatActivity {
 
         player1.setLegStart(true);
 
-        enterScore1.setHintTextColor(getResources().getColor(R.color.buttonStroke));
-        enterScore2.setHintTextColor(getResources().getColor(R.color.header_background));
+        enterScore[0].setHintTextColor(getResources().getColor(R.color.buttonStroke));
+        enterScore[1].setHintTextColor(getResources().getColor(R.color.header_background));
     }
 
     /**
@@ -194,10 +194,10 @@ public class PlayGameActivity extends AppCompatActivity {
             player2.setPlayerName(players.get(1));
             player2.setScore(gameMode);
 
-            playerName1.setText(player1.getPlayerName());
-            score1.setText(String.valueOf(player1.getScore()));
-            playerName2.setText(player2.getPlayerName());
-            score2.setText(String.valueOf(player2.getScore()));
+            playerName[0].setText(player1.getPlayerName());
+            score[0].setText(String.valueOf(player1.getScore()));
+            playerName[1].setText(player2.getPlayerName());
+            score[1].setText(String.valueOf(player2.getScore()));
 
             if (onlinePlay) {
                 currentKey = bundle.getString("CURRENT_KEY");
@@ -226,9 +226,9 @@ public class PlayGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if ((okBtnPress % 2) == 0) {
-                    enterScore1.setText("");
+                    enterScore[0].setText("");
                 } else if ((okBtnPress % 2) == 1) {
-                    enterScore2.setText("");
+                    enterScore[1].setText("");
                 }
             }
         });
@@ -245,9 +245,9 @@ public class PlayGameActivity extends AppCompatActivity {
 
     private void appendNumberToEnterScore(String number) {
         if ((okBtnPress % 2) == 0) {
-            enterScore1.append(number);
+            enterScore[0].append(number);
         } else if ((okBtnPress % 2) == 1) {
-            enterScore2.append(number);
+            enterScore[1].append(number);
         }
     }
 
@@ -286,7 +286,7 @@ public class PlayGameActivity extends AppCompatActivity {
     private void player1Round() {
         try {
             int score_helper;
-            score_helper = Integer.parseInt(String.valueOf(enterScore1.getText()));
+            score_helper = Integer.parseInt(String.valueOf(enterScore[0].getText()));
 
             if (score_helper > 180) {
                 Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
@@ -302,11 +302,11 @@ public class PlayGameActivity extends AppCompatActivity {
                     okBtnPress++;
 
                     player1.setScore(player1.getScore() - score_helper);
-                    score1.setText(String.valueOf(player1.getScore()));
+                    score[0].setText(String.valueOf(player1.getScore()));
                     player1.setLastScore(score_helper);
 
                     ///Kiszállózás
-                    getPlayerCheckout(player1, score1, checkout1);
+                    getPlayerCheckout(player1, score[0], checkout[0]);
 
                     legAvg_help[0] += score_helper;
                     matchAvg_help[0] += score_helper;
@@ -314,28 +314,28 @@ public class PlayGameActivity extends AppCompatActivity {
                     player1.setLegAvg(legAvg_help[0] / legRounds[0]);
                     player1.setMatchAvg(matchAvg_help[0] / matchRounds[0]);
 
-                    updateAvgViews(player1, legAvg1, matchAvg1);
+                    updateAvgViews(player1, legAvg[0], matchAvg[0]);
 
-                    enterScore1.setText("");
-                    enterScore2.requestFocus();
+                    enterScore[0].setText("");
+                    enterScore[1].requestFocus();
 
-                    enterScore1.setHintTextColor(getResources().getColor(R.color.background));
-                    enterScore2.setHintTextColor(getResources().getColor(R.color.buttonStroke));
+                    enterScore[0].setHintTextColor(getResources().getColor(R.color.background));
+                    enterScore[1].setHintTextColor(getResources().getColor(R.color.buttonStroke));
                 }
             }
 
             //Legek végét figyelő kódrész.
-            if (Integer.parseInt(String.valueOf(score1.getText())) == 0) {
+            if (Integer.parseInt(String.valueOf(score[0].getText())) == 0) {
                 legWinnerDialog(player1).show();
                 legRounds[0] = 0;
                 legAvg_help[0] = 0;
                 player1.setLegW(player1.getLegW() + 1);
-                legsWon1.setText(String.valueOf(player1.getLegW()));
-                score1.setText(String.valueOf(gameMode));
+                legsWon[0].setText(String.valueOf(player1.getLegW()));
+                score[0].setText(String.valueOf(gameMode));
                 player1.setScore(gameMode);
-                score2.setText(String.valueOf(gameMode));
+                score[1].setText(String.valueOf(gameMode));
                 player2.setScore(gameMode);
-                checkout2.setText("");
+                checkout[1].setText("");
 
                 setLegStartPlayer(player1, player2);
             }
@@ -360,7 +360,7 @@ public class PlayGameActivity extends AppCompatActivity {
     private void player2Round() {
         try {
             int score_helper;
-            score_helper = Integer.parseInt(String.valueOf(enterScore2.getText()));
+            score_helper = Integer.parseInt(String.valueOf(enterScore[1].getText()));
 
             if (score_helper > 180) {
                 Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
@@ -376,11 +376,11 @@ public class PlayGameActivity extends AppCompatActivity {
                     okBtnPress++;
 
                     player2.setScore(player2.getScore() - score_helper);
-                    score2.setText(String.valueOf(player2.getScore()));
+                    score[1].setText(String.valueOf(player2.getScore()));
                     player2.setLastScore(score_helper);
 
                     ///Kiszállók
-                    getPlayerCheckout(player2, score2, checkout2);
+                    getPlayerCheckout(player2, score[1], checkout[1]);
 
                     legAvg_help[1] += score_helper;
                     matchAvg_help[1] += score_helper;
@@ -388,29 +388,29 @@ public class PlayGameActivity extends AppCompatActivity {
                     player2.setLegAvg(legAvg_help[1] / legRounds[1]);
                     player2.setMatchAvg(matchAvg_help[1] / matchRounds[1]);
 
-                    updateAvgViews(player2, legAvg2, matchAvg2);
+                    updateAvgViews(player2, legAvg[1], matchAvg[1]);
 
-                    enterScore2.setText("");
-                    enterScore1.requestFocus();
+                    enterScore[1].setText("");
+                    enterScore[0].requestFocus();
 
-                    enterScore2.setHintTextColor(getResources().getColor(R.color.background));
-                    enterScore1.setHintTextColor(getResources().getColor(R.color.buttonStroke));
+                    enterScore[1].setHintTextColor(getResources().getColor(R.color.background));
+                    enterScore[0].setHintTextColor(getResources().getColor(R.color.buttonStroke));
                 }
             }
 
             //Legek végét figyelő kódrész.
-            if (Integer.parseInt(String.valueOf(score2.getText())) == 0) {
+            if (Integer.parseInt(String.valueOf(score[1].getText())) == 0) {
                 legWinnerDialog(player2).show();
                 legRounds[1] = 0;
                 legAvg_help[1] = 0;
                 player2.setLegW(player2.getLegW() + 1);
-                legsWon2.setText(String.valueOf(player2.getLegW()));
-                score2.setText(String.valueOf(gameMode));
+                legsWon[1].setText(String.valueOf(player2.getLegW()));
+                score[1].setText(String.valueOf(gameMode));
                 player2.setScore(gameMode);
 
-                score1.setText(String.valueOf(gameMode));
+                score[0].setText(String.valueOf(gameMode));
                 player1.setScore(gameMode);
-                checkout1.setText("");
+                checkout[0].setText("");
 
                 setLegStartPlayer(player1, player2);
             }
@@ -436,7 +436,7 @@ public class PlayGameActivity extends AppCompatActivity {
         if (isOnline()) {
             try {
                 int score_helper;
-                score_helper = Integer.parseInt(String.valueOf(enterScore1.getText()));
+                score_helper = Integer.parseInt(String.valueOf(enterScore[0].getText()));
 
                 if (score_helper > 180) {
                     Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
@@ -453,11 +453,11 @@ public class PlayGameActivity extends AppCompatActivity {
                         okBtnPress++;
 
                         player1.setScore(player1.getScore() - score_helper);
-                        score1.setText(String.valueOf(player1.getScore()));
+                        score[0].setText(String.valueOf(player1.getScore()));
                         player1.setLastScore(score_helper);
 
                         ///Kiszállózás
-                        getPlayerCheckout(player1, score1, checkout1);
+                        getPlayerCheckout(player1, score[0], checkout[0]);
 
                         legAvg_help[0] += score_helper;
                         matchAvg_help[0] += score_helper;
@@ -465,13 +465,13 @@ public class PlayGameActivity extends AppCompatActivity {
                         player1.setLegAvg(legAvg_help[0] / legRounds[0]);
                         player1.setMatchAvg(matchAvg_help[0] / matchRounds[0]);
 
-                        updateAvgViews(player1, legAvg1, matchAvg1);
+                        updateAvgViews(player1, legAvg[0], matchAvg[0]);
 
-                        enterScore1.setText("");
-                        enterScore2.requestFocus();
+                        enterScore[0].setText("");
+                        enterScore[1].requestFocus();
 
-                        enterScore1.setHintTextColor(getResources().getColor(R.color.background));
-                        enterScore2.setHintTextColor(getResources().getColor(R.color.buttonStroke));
+                        enterScore[0].setHintTextColor(getResources().getColor(R.color.background));
+                        enterScore[1].setHintTextColor(getResources().getColor(R.color.buttonStroke));
 
                         databaseRef.child(currentKey).child("score1").setValue(player1.getScore());
                         double p1Avg = numberRound(player1.getMatchAvg(), 2);
@@ -480,17 +480,17 @@ public class PlayGameActivity extends AppCompatActivity {
                 }
 
                 //Legek végét figyelő kódrész.
-                if (Integer.parseInt(String.valueOf(score1.getText())) == 0) {
+                if (Integer.parseInt(String.valueOf(score[0].getText())) == 0) {
                     legWinnerDialog(player1).show();
                     legRounds[0] = 0;
                     legAvg_help[0] = 0;
                     player1.setLegW(player1.getLegW() + 1);
-                    legsWon1.setText(String.valueOf(player1.getLegW()));
-                    score1.setText(String.valueOf(gameMode));
+                    legsWon[0].setText(String.valueOf(player1.getLegW()));
+                    score[0].setText(String.valueOf(gameMode));
                     player1.setScore(gameMode);
-                    score2.setText(String.valueOf(gameMode));
+                    score[1].setText(String.valueOf(gameMode));
                     player2.setScore(gameMode);
-                    checkout2.setText("");
+                    checkout[1].setText("");
 
                     databaseRef.child(currentKey).child("legW_1").setValue(player1.getLegW());
                     databaseRef.child(currentKey).child("score1").setValue(gameMode);
@@ -526,7 +526,7 @@ public class PlayGameActivity extends AppCompatActivity {
         if (isOnline()) {
             try {
                 int score_helper;
-                score_helper = Integer.parseInt(String.valueOf(enterScore2.getText()));
+                score_helper = Integer.parseInt(String.valueOf(enterScore[1].getText()));
 
                 if (score_helper > 180) {
                     Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
@@ -542,11 +542,11 @@ public class PlayGameActivity extends AppCompatActivity {
                         okBtnPress++;
 
                         player2.setScore(player2.getScore() - score_helper);
-                        score2.setText(String.valueOf(player2.getScore()));
+                        score[1].setText(String.valueOf(player2.getScore()));
                         player2.setLastScore(score_helper);
 
                         ///Kiszállók
-                        getPlayerCheckout(player2, score2, checkout2);
+                        getPlayerCheckout(player2, score[1], checkout[1]);
 
                         legAvg_help[1] += score_helper;
                         matchAvg_help[1] += score_helper;
@@ -554,13 +554,13 @@ public class PlayGameActivity extends AppCompatActivity {
                         player2.setLegAvg(legAvg_help[1] / legRounds[1]);
                         player2.setMatchAvg(matchAvg_help[1] / matchRounds[1]);
 
-                        updateAvgViews(player2, legAvg2, matchAvg2);
+                        updateAvgViews(player2, legAvg[1], matchAvg[1]);
 
-                        enterScore2.setText("");
-                        enterScore1.requestFocus();
+                        enterScore[1].setText("");
+                        enterScore[0].requestFocus();
 
-                        enterScore2.setHintTextColor(getResources().getColor(R.color.background));
-                        enterScore1.setHintTextColor(getResources().getColor(R.color.buttonStroke));
+                        enterScore[1].setHintTextColor(getResources().getColor(R.color.background));
+                        enterScore[0].setHintTextColor(getResources().getColor(R.color.buttonStroke));
 
                         databaseRef.child(currentKey).child("score2").setValue(player2.getScore());
                         double p2Avg = numberRound(player2.getMatchAvg(), 2);
@@ -569,18 +569,18 @@ public class PlayGameActivity extends AppCompatActivity {
                 }
 
                 //Legek végét figyelő kódrész.
-                if (Integer.parseInt(String.valueOf(score2.getText())) == 0) {
+                if (Integer.parseInt(String.valueOf(score[1].getText())) == 0) {
                     legWinnerDialog(player2).show();
                     legRounds[1] = 0;
                     legAvg_help[1] = 0;
                     player2.setLegW(player2.getLegW() + 1);
-                    legsWon2.setText(String.valueOf(player2.getLegW()));
-                    score2.setText(String.valueOf(gameMode));
+                    legsWon[1].setText(String.valueOf(player2.getLegW()));
+                    score[1].setText(String.valueOf(gameMode));
                     player2.setScore(gameMode);
 
-                    score1.setText(String.valueOf(gameMode));
+                    score[0].setText(String.valueOf(gameMode));
                     player1.setScore(gameMode);
-                    checkout1.setText("");
+                    checkout[0].setText("");
 
                     databaseRef.child(currentKey).child("legW_2").setValue(player2.getLegW());
                     databaseRef.child(currentKey).child("score1").setValue(gameMode);
@@ -624,25 +624,20 @@ public class PlayGameActivity extends AppCompatActivity {
         player.setMatchAvg(matchAvg / matchRounds);
     }
 
-    private void setPlayerAvarageViews(DartsPlayer player, TextView legView, TextView matchView) {
-        legView.setText(String.valueOf(player.getLegAvg()));
-        matchView.setText(String.valueOf(player.getMatchAvg()));
-    }
-
     private void setLegStartPlayer(@NonNull DartsPlayer p1, @NonNull DartsPlayer p2) {
         if (p1.getLegStart()) {
             p1.setLegStart(false);
             p2.setLegStart(true);
-            enterScore1.setHintTextColor(getResources().getColor(R.color.background));
-            enterScore2.setHintTextColor(getResources().getColor(R.color.buttonStroke));
+            enterScore[0].setHintTextColor(getResources().getColor(R.color.background));
+            enterScore[1].setHintTextColor(getResources().getColor(R.color.buttonStroke));
             if ((okBtnPress % 2) == 0) {
                 okBtnPress--;
             }
         } else if (p2.getLegStart()) {
             p2.setLegStart(false);
             p1.setLegStart(true);
-            enterScore1.setHintTextColor(getResources().getColor(R.color.buttonStroke));
-            enterScore2.setHintTextColor(getResources().getColor(R.color.background));
+            enterScore[0].setHintTextColor(getResources().getColor(R.color.buttonStroke));
+            enterScore[1].setHintTextColor(getResources().getColor(R.color.background));
             if ((okBtnPress % 2) == 1) {
                 okBtnPress--;
             }
@@ -691,23 +686,23 @@ public class PlayGameActivity extends AppCompatActivity {
                         matchRounds[0]--;
                         legRounds[0]--;
                         player1.setScore(player1.getScore() + player1.getLastScore());
-                        score1.setText(String.valueOf(player1.getScore()));
+                        score[0].setText(String.valueOf(player1.getScore()));
 
                         legAvg_help[0] -= player1.getLastScore();
                         matchAvg_help[0] -= player1.getLastScore();
                         player1.setLegAvg(legAvg_help[0] / legRounds[0]);
                         player1.setMatchAvg(matchAvg_help[0] / matchRounds[0]);
 
-                        legAvg1.setText(String.valueOf(player1.getLegAvg()));
-                        matchAvg1.setText(String.valueOf(player1.getMatchAvg()));
+                        legAvg[0].setText(String.valueOf(player1.getLegAvg()));
+                        matchAvg[0].setText(String.valueOf(player1.getMatchAvg()));
 
-                        enterScore1.setText("");
-                        enterScore2.requestFocus();
+                        enterScore[0].setText("");
+                        enterScore[1].requestFocus();
                     } else if (okBtnPress % 2 == 1) {
                         matchRounds[1]--;
                         legRounds[1]--;
                         player2.setScore(player2.getScore() + player2.getLastScore());
-                        score2.setText(String.valueOf(player2.getScore()));
+                        score[1].setText(String.valueOf(player2.getScore()));
 
                         legAvg_help[1] -= player2.getLastScore();
                         matchAvg_help[1] -= player2.getLastScore();
@@ -715,11 +710,11 @@ public class PlayGameActivity extends AppCompatActivity {
                         player2.setLegAvg(legAvg_help[1] / legRounds[1]);
                         player2.setMatchAvg(matchAvg_help[1] / matchRounds[1]);
 
-                        legAvg2.setText(String.valueOf(player2.getLegAvg()));
-                        matchAvg2.setText(String.valueOf(player2.getMatchAvg()));
+                        legAvg[1].setText(String.valueOf(player2.getLegAvg()));
+                        matchAvg[1].setText(String.valueOf(player2.getMatchAvg()));
 
-                        enterScore2.setText("");
-                        enterScore1.requestFocus();
+                        enterScore[1].setText("");
+                        enterScore[0].requestFocus();
                     }
                     dialog.dismiss();
                 }
