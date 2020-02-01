@@ -251,7 +251,6 @@ public class PlayGameActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * Elvégezzük a scoreboard frissítését.
      */
@@ -288,12 +287,12 @@ public class PlayGameActivity extends AppCompatActivity {
             int score_helper;
             score_helper = Integer.parseInt(String.valueOf(enterScore[0].getText()));
 
-            if (score_helper > 180) {
+            if (isOver180(score_helper)) {
                 Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
             } else {
-                if (player1.getScore() - score_helper < 0) {
+                if (isUnderZero(player1, score_helper)) {
                     Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
-                } else if (player1.getScore() - score_helper == 0 && notCheckOut(player1.getScore())) {
+                } else if (isNotCheckout(player1, score_helper)) {
                     Toast.makeText(PlayGameActivity.this,
                             getString(R.string.nocheckout, player1.getScore()), Toast.LENGTH_LONG).show();
                 } else {
@@ -359,12 +358,12 @@ public class PlayGameActivity extends AppCompatActivity {
             int score_helper;
             score_helper = Integer.parseInt(String.valueOf(enterScore[1].getText()));
 
-            if (score_helper > 180) {
+            if (isOver180(score_helper)) {
                 Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
             } else {
-                if (player2.getScore() - score_helper < 0) {
+                if (isUnderZero(player2, score_helper)) {
                     Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
-                } else if (player2.getScore() - score_helper == 0 && notCheckOut(player2.getScore())) {
+                } else if (isNotCheckout(player2, score_helper)) {
                     Toast.makeText(PlayGameActivity.this,
                             getString(R.string.nocheckout, player2.getScore()), Toast.LENGTH_LONG).show();
                 } else {
@@ -432,13 +431,12 @@ public class PlayGameActivity extends AppCompatActivity {
                 int score_helper;
                 score_helper = Integer.parseInt(String.valueOf(enterScore[0].getText()));
 
-                if (score_helper > 180) {
+                if (isOver180(score_helper)) {
                     Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
                 } else {
-
-                    if (player1.getScore() - score_helper < 0) {
+                    if (isUnderZero(player1, score_helper)) {
                         Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
-                    } else if (player1.getScore() - score_helper == 0 && notCheckOut(player1.getScore())) {
+                    } else if (isNotCheckout(player1, score_helper)) {
                         Toast.makeText(PlayGameActivity.this,
                                 getString(R.string.nocheckout, player1.getScore()), Toast.LENGTH_LONG).show();
                     } else {
@@ -519,12 +517,12 @@ public class PlayGameActivity extends AppCompatActivity {
                 int score_helper;
                 score_helper = Integer.parseInt(String.valueOf(enterScore[1].getText()));
 
-                if (score_helper > 180) {
+                if (isOver180(score_helper)) {
                     Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
                 } else {
-                    if (player2.getScore() - score_helper < 0) {
+                    if (isUnderZero(player2, score_helper)) {
                         Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
-                    } else if (player2.getScore() - score_helper == 0 && notCheckOut(player2.getScore())) {
+                    } else if (isNotCheckout(player2, score_helper)) {
                         Toast.makeText(PlayGameActivity.this,
                                 getString(R.string.nocheckout, player2.getScore()), Toast.LENGTH_LONG).show();
                     } else {
@@ -597,6 +595,18 @@ public class PlayGameActivity extends AppCompatActivity {
         } else {
             noInternetPlayer2().show();
         }
+    }
+
+    private boolean isOver180(int helper) {
+        return helper > 180;
+    }
+
+    private boolean isUnderZero(DartsPlayer player, int helper) {
+        return (player.getScore() - helper) < 0;
+    }
+
+    private boolean isNotCheckout(DartsPlayer player, int helper) {
+        return ((player.getScore() - helper == 0) && notCheckOut(player.getScore()));
     }
 
     private void updateAvgViews(DartsPlayer player, TextView legAvg, TextView matchAvg) {
