@@ -273,28 +273,18 @@ public class PlayGameActivity extends AppCompatActivity {
         }
     };
 
-    private void getPlayerCheckout(@NonNull DartsPlayer player, TextView score, TextView checkout) {
-        if (player.getScore() < 180) {
-            databaseAccess.open();
-            String checkO = databaseAccess.getCheckout(String.valueOf(score.getText()));
-            databaseAccess.close();
-            checkout.setText(checkO);
-        }
-    }
-
     private void player1Round() {
         try {
             int score_helper;
             score_helper = Integer.parseInt(String.valueOf(enterScore[0].getText()));
 
             if (isOver180(score_helper)) {
-                Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
+                showToast(getString(R.string.invalid3darts));
             } else {
                 if (isUnderZero(player1, score_helper)) {
-                    Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
+                    showToast(getString(R.string.not_possible));
                 } else if (isNotCheckout(player1, score_helper)) {
-                    Toast.makeText(PlayGameActivity.this,
-                            getString(R.string.nocheckout, player1.getScore()), Toast.LENGTH_LONG).show();
+                    showToast(getString(R.string.nocheckout, player1.getScore()));
                 } else {
                     matchRounds[0]++;
                     legRounds[0]++;
@@ -359,13 +349,12 @@ public class PlayGameActivity extends AppCompatActivity {
             score_helper = Integer.parseInt(String.valueOf(enterScore[1].getText()));
 
             if (isOver180(score_helper)) {
-                Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
+                showToast(getString(R.string.invalid3darts));
             } else {
                 if (isUnderZero(player2, score_helper)) {
-                    Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
+                    showToast(getString(R.string.not_possible));
                 } else if (isNotCheckout(player2, score_helper)) {
-                    Toast.makeText(PlayGameActivity.this,
-                            getString(R.string.nocheckout, player2.getScore()), Toast.LENGTH_LONG).show();
+                    showToast(getString(R.string.nocheckout, player2.getScore()));
                 } else {
                     matchRounds[1]++;
                     legRounds[1]++;
@@ -432,13 +421,12 @@ public class PlayGameActivity extends AppCompatActivity {
                 score_helper = Integer.parseInt(String.valueOf(enterScore[0].getText()));
 
                 if (isOver180(score_helper)) {
-                    Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
+                    showToast(getString(R.string.invalid3darts));
                 } else {
                     if (isUnderZero(player1, score_helper)) {
-                        Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
+                        showToast(getString(R.string.not_possible));
                     } else if (isNotCheckout(player1, score_helper)) {
-                        Toast.makeText(PlayGameActivity.this,
-                                getString(R.string.nocheckout, player1.getScore()), Toast.LENGTH_LONG).show();
+                        showToast(getString(R.string.nocheckout, player1.getScore()));
                     } else {
                         matchRounds[0]++;
                         legRounds[0]++;
@@ -518,13 +506,12 @@ public class PlayGameActivity extends AppCompatActivity {
                 score_helper = Integer.parseInt(String.valueOf(enterScore[1].getText()));
 
                 if (isOver180(score_helper)) {
-                    Toast.makeText(PlayGameActivity.this, R.string.invalid3darts, Toast.LENGTH_LONG).show();
+                    showToast(getString(R.string.invalid3darts));
                 } else {
                     if (isUnderZero(player2, score_helper)) {
-                        Toast.makeText(PlayGameActivity.this, R.string.not_possible, Toast.LENGTH_LONG).show();
+                        showToast(getString(R.string.not_possible));
                     } else if (isNotCheckout(player2, score_helper)) {
-                        Toast.makeText(PlayGameActivity.this,
-                                getString(R.string.nocheckout, player2.getScore()), Toast.LENGTH_LONG).show();
+                        showToast(getString(R.string.nocheckout, player2.getScore()));
                     } else {
                         matchRounds[1]++;
                         legRounds[1]++;
@@ -609,6 +596,19 @@ public class PlayGameActivity extends AppCompatActivity {
         return ((player.getScore() - helper == 0) && notCheckOut(player.getScore()));
     }
 
+    private void getPlayerCheckout(@NonNull DartsPlayer player, TextView score, TextView checkout) {
+        if (player.getScore() < 180) {
+            databaseAccess.open();
+            String checkO = databaseAccess.getCheckout(String.valueOf(score.getText()));
+            databaseAccess.close();
+            checkout.setText(checkO);
+        }
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(PlayGameActivity.this, message, Toast.LENGTH_LONG).show();
+    }
+
     private void updateAvgViews(DartsPlayer player, TextView legAvg, TextView matchAvg) {
         legAvg.setText(String.valueOf(player.getLegAvg()));
         matchAvg.setText(String.valueOf(player.getMatchAvg()));
@@ -644,11 +644,11 @@ public class PlayGameActivity extends AppCompatActivity {
         }
     }
 
-    private boolean notCheckOut(int n) {
+    private boolean notCheckOut(int number) {
         int[] nco = getResources().getIntArray(R.array.noCheckOuts);
 
         for (int i = 0; i < nco.length; i++) {
-            if (n == nco[i]) {
+            if (number == nco[i]) {
                 return true;
             }
         }
